@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 musicbrainzngs = ">=0.4"
 fastapi = "*"
+pyyaml = "*"
 
 [dev-packages]
 
