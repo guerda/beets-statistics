@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Beets Statistics</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <style>
+        .completeness { border: 1px solid black; height: 1em; width: 15vw; }
+        .progress-bar { background-color: rgba(0, 255, 4, 0.607); height: 100%; }
+    </style>
+
+</head>
+<body>
+    {% for album in albums %}
+    {{album}}
+        <div class="album">
+            <div class="album-title">{{album.title}}</div>
+            <div class="completeness"><div style="width: {{album.complete_percentage}}%;" class="progress-bar">{{album.complete_percentage}}%</div></div>
+        </div>
+    {% endfor %}
+    </body>
+</html>
