@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Albums - Beets Statistics</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="{{ url_for('static', path='main.css') }}" />
+  </head>
+  <body>
+    {% include 'navigation.html' %}
+    <content>
+      <h2>Albums</h2>
+      <div>Sort by: <a href="?sort_by=album">Album</a> <a href="?sort_by=albumartist_sort">Artist</a> <a href="?sort_by=year">Year</a></div>
+
+      <div class="album-cards">
+      {% for album in albums %}
+        <div class="album">
+            <div class="container">
+              <h4 class="album-title">{{album.title}}</h4>
+              <h5 class="album-year">{{album.year}}</h5>
+              <div class="album-artist">{{album.album_artist}}</div>
+              <div class="album-genre">{{album.genre}}</div>
+              <div class="completeness">
+              {% if album.complete_percentage > 100 %}
+                <div class="progress-bar invalid">
+              {% else %}
+                <div
+                  style="width: {{album.complete_percentage|round}}%;"
+                  class="progress-bar"
+                >
+              {% endif %}
+              {{album.complete_percentage|round}}%
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+      </div>
+    </content>
+{% include 'footer.html' %}
+  </body>
+</html>

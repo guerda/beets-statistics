@@ -2,25 +2,34 @@ import sqlite3
 import yaml
 import os
 import musicbrainzngs as mb
-from pprint import pprint 
+from pprint import pprint
 import argparse
 import os.path
-    
+from enum import Enum
+
 
 class DBNotFoundError(Exception):
     pass
 
-class Album():
+class DBQueryError(Exception):
+    pass
+
+
+class Album:
     def __repr__(self):
         return f"ID: {self.id}, Title: {self.title}, Tracks: {self.tracks}/{self.track_total} ({self.complete_percentage}%), Album artist: {self.album_artist}, Genre: {self.genre}, Year: {self.year} ({self.original_year})"
 
-class BeetsStatistics():
 
+class AlbumSort(Enum):
+    ARTIST = "albumartist_sort"
+    ALBUM = "album"
+    YEAR = "year"
+
+
+class BeetsStatistics:
     def __init__(self, db_file: str):
         self.db_file = db_file
         self.connection = None
-    
-
 
     def get_db_file_name(self):
         if self.db_file is not None:
@@ -38,7 +47,7 @@ class BeetsStatistics():
         print(albums["release-count"])
         for album in albums["release-list"]:
             pprint(album, width=200)
-            print("-"*200)
+            print("-" * 200)
 
     def get_db_connection(self):
         if self.connection is not None:
@@ -47,7 +56,7 @@ class BeetsStatistics():
         db_file_name = self.get_db_file_name()
         if not db_file_name:
             raise DBNotFoundError
-        
+
         if not os.path.isfile(db_file_name):
             raise DBNotFoundError(db_file_name)
         self.connection = sqlite3.connect(db_file_name)
@@ -59,15 +68,16 @@ class BeetsStatistics():
         if self.connection:
             self.connection.close()
 
-    def get_albums_from_db(self):
+    def get_albums_from_db(self, sort_by: AlbumSort = AlbumSort.ARTIST):
         connection = self.get_db_connection()
         cursor = connection.cursor()
-        res = cursor.execute("""select
+        res = cursor.execute(
+            """select
             i.album_id,
             i.album,
             count(i.track) as tracks,
             max(i.tracktotal) as tracktotal,
-            round(count(i.track)/ cast(max(i.tracktotal) as float), 2) * 100 as complete,
+            ifnull(round(count(i.track)/ cast(max(i.tracktotal) as float), 2) * 100, 0) as complete,
             a.*
         from
             albums a
@@ -78,7 +88,9 @@ class BeetsStatistics():
             album_id is not null
         group by
             i.album_id
-        """)
+        order by a.{} asc
+        """.format(sort_by.value)
+        )
 
         albums = res.fetchall()
         cursor.close()
@@ -89,16 +101,65 @@ class BeetsStatistics():
             return_album.id = album["album_id"]
             return_album.title = album["album"]
             return_album.tracks = album["tracks"]
-            return_album.track_total  = album["tracktotal"]
+            return_album.track_total = album["tracktotal"]
             return_album.complete_percentage = album["complete"]
             return_album.album_artist = album["albumartist"]
             return_album.genre = album["genre"]
             return_album.year = album["year"]
             return_album.original_year = album["original_year"]
             # id |artpath|added |albumartist |albumartist_sort|albumartist_credit|albumartists|albumartists_sort |albumartists_credit|album |genre |style|discogs_albumid|discogs_artistid|discogs_labelid|year|month|day|disctotal|comp|mb_albumid|mb_albumartistid|albumtype|albumtypes|label |barcode |mb_releasegroupid |release_group_title |asin|catalognum|script|language|country|albumstatus|albumdisambig|releasegroupdisambig|rg_album_gain|rg_album_peak|r128_album_gain|original_year|original_month|original_day|
-        
+
             result.append(return_album)
         return result
+
+    def get_genre_count(self):
+        cursor = self.get_db_connection().cursor()
+        res = cursor.execute(
+            """select
+                    case
+                        when a.genre = '' then "n/a"
+                        else ifnull(a.genre, "n/a")
+                    end as genre,
+                    count(1) as count
+                from
+                    albums a
+                group by
+                    a.genre
+                order by
+                    2 desc"""
+        )
+        genres = res.fetchall()
+        res = cursor.execute(
+            """select
+                    count(1)
+                from
+                    albums"""
+        )
+        count = res.fetchone()[0]
+        cursor.close()
+
+        return genres, count
+
+    def get_artist_stats(self):
+        try:
+            cursor = self.get_db_connection().cursor()
+            res = cursor.execute("""select
+                    count(1) as track_count,
+                    i.artist
+                from
+                    items i
+                group by
+                    i.artist
+                having
+                    track_count > 1
+                order by
+                    1 desc,
+                    i.artist_sort asc""")
+            artists = res.fetchall()
+            cursor.close()
+            return artists
+        except Exception as e:
+            raise DBQueryError(e)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(prog="beets-statistics")
@@ -106,9 +167,13 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-
     bs = BeetsStatistics(db_file=args.beets_db)
     print(bs.get_db_file_name())
     for album in bs.get_albums_from_db():
-        print(album.title, album.complete_percentage) # Complete percentage
+        print(album.title, album.complete_percentage)  # Complete percentage
+    print("-"*140)
+    for artist in bs.get_artist_stats():
+        
+        print("{} - {}".format(artist["track_count"], artist["artist"]))
+
     bs.close()

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Genres - Beets Statistics</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="{{ url_for('static', path='main.css') }}" />
+  </head>
+  <body>
+    {% include 'navigation.html' %}
+    <content>
+      <h2>Genres</h2>
+      {% for genre in genres[0] %}
+        <div>
+          {{genre.genre}}
+          <div class="completeness">
+            <div class="progress-bar" style="width:{{100.0*genre.count/genres[1]|round}}%;">
+              {{genre.count}}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </content>
+    {% include 'footer.html' %}
+  </body>
+</html>

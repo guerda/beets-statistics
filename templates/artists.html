@@ -3,15 +3,19 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Beets Statistics</title>
+    <title>Artists - Beets Statistics</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="{{ url_for('static', path='main.css') }}" />
   </head>
   <body>
     {% include 'navigation.html' %}
     <content>
-      <h2></h2>
-    </content>
-{% include 'footer.html' %}
+      <h2>Artists</h2>
+      <ul>
+      {% for artist in artists %}
+        <li>{{artist.artist}} - {{artist.track_count}}</li>
+      {% endfor %}
+      </content>
+    {% include 'footer.html' %}
   </body>
 </html>

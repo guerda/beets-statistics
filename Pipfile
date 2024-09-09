@@ -10,6 +10,13 @@ pyyaml = "*"
 jinja2 = "*"
 
 [dev-packages]
+ruff = "*"
 
 [requires]
 python_version = "3.9"
+
+[scripts]
+dev = "pipenv run fastapi dev app.py"
+prod = "pipenv run uvicorn app:app"
+rc = "pipenv run ruff check ."
+rf = "pipenv run ruff format ."
