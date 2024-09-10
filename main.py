@@ -11,6 +11,7 @@ from enum import Enum
 class DBNotFoundError(Exception):
     pass
 
+
 class DBQueryError(Exception):
     pass
 
@@ -112,7 +113,7 @@ class BeetsStatistics:
             result.append(return_album)
         return result
 
-    def get_genre_count(self):
+    def get_genre_count(self, limit: int = 0):
         cursor = self.get_db_connection().cursor()
         res = cursor.execute(
             """select
@@ -126,8 +127,10 @@ class BeetsStatistics:
                 group by
                     a.genre
                 order by
-                    2 desc"""
+                    2 desc
+                {}""".format("LIMIT {}".format(limit) if limit > 0 else "")
         )
+
         genres = res.fetchall()
         res = cursor.execute(
             """select
@@ -140,10 +143,11 @@ class BeetsStatistics:
 
         return genres, count
 
-    def get_artist_stats(self):
+    def get_artist_stats(self, limit: int = 0):
         try:
             cursor = self.get_db_connection().cursor()
-            res = cursor.execute("""select
+            res = cursor.execute(
+                """select
                     count(1) as track_count,
                     i.artist
                 from
@@ -154,12 +158,56 @@ class BeetsStatistics:
                     track_count > 1
                 order by
                     1 desc,
-                    i.artist_sort asc""")
+                    i.artist_sort asc
+                {}""".format("LIMIT {}".format(limit) if limit > 0 else "")
+            )
             artists = res.fetchall()
             cursor.close()
             return artists
         except Exception as e:
             raise DBQueryError(e)
+
+    def get_track_count(self):
+        query = """select
+              count(1) as count
+              from
+                  items"""
+        track_count = self._query_one_value(query)
+        return track_count
+
+    def _query_one_value(self, query: str):
+        try:
+            cursor = self.get_db_connection().cursor()
+            res = cursor.execute(query)
+            value = res.fetchone()
+            cursor.close()
+            return value[0]
+        except Exception as e:
+            raise DBQueryError(e)
+
+    def get_album_count(self):
+        query = """select count(1) as count from albums"""
+        return self._query_one_value(query)
+
+    def get_playback_length(self):
+        query = """SELECT sum(length) FROM items i"""
+        return self._query_one_value(query)
+
+    def get_file_size(self):
+        query = """SELECT
+                    sum(i.bitrate * i."length" / 8) AS SIZE
+                FROM
+                    items i;"""
+        return self._query_one_value(query)
+
+    def get_avg_bpm(self):
+        query = """SELECT
+                    round(avg(i.bpm))
+                FROM
+                    items i
+                WHERE
+                    i.bpm > 0"""
+        return self._query_one_value(query)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(prog="beets-statistics")
@@ -171,9 +219,8 @@ if __name__ == "__main__":
     print(bs.get_db_file_name())
     for album in bs.get_albums_from_db():
         print(album.title, album.complete_percentage)  # Complete percentage
-    print("-"*140)
+    print("-" * 140)
     for artist in bs.get_artist_stats():
-        
         print("{} - {}".format(artist["track_count"], artist["artist"]))
 
     bs.close()

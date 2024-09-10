@@ -8,6 +8,7 @@ musicbrainzngs = ">=0.4"
 fastapi = "*"
 pyyaml = "*"
 jinja2 = "*"
+humanize = "*"
 
 [dev-packages]
 ruff = "*"
