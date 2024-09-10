@@ -4,11 +4,11 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-musicbrainzngs = ">=0.4"
-fastapi = "*"
+fastapi = {extras = ["standard"], version = "*"}
 pyyaml = "*"
 jinja2 = "*"
 humanize = "*"
+pydantic = "*"
 
 [dev-packages]
 ruff = "*"
@@ -18,6 +18,6 @@ python_version = "3.9"
 
 [scripts]
 dev = "pipenv run fastapi dev app.py"
-prod = "pipenv run uvicorn app:app"
+prod = "pipenv run fastapi run app.py"
 rc = "pipenv run ruff check ."
 rf = "pipenv run ruff format ."

@@ -1,7 +1,6 @@
 import sqlite3
 import yaml
 import os
-import musicbrainzngs as mb
 from pprint import pprint
 import argparse
 import os.path
@@ -41,14 +40,6 @@ class BeetsStatistics:
         with open(config_file_name, "r") as file:
             config = yaml.safe_load(file)
             return config[db_config_key]
-
-    def get_track_count_from_mb(self, artist: str, album: str):
-        mb.set_useragent("beets-statistics", 0.1)
-        albums = mb.search_releases(artist=artist, release=album, limit=5)
-        print(albums["release-count"])
-        for album in albums["release-list"]:
-            pprint(album, width=200)
-            print("-" * 200)
 
     def get_db_connection(self):
         if self.connection is not None:
