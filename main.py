@@ -39,7 +39,7 @@ class BeetsStatistics:
         config_file_name = os.path.expanduser("~/.config/beets/config.yaml")
         with open(config_file_name, "r") as file:
             config = yaml.safe_load(file)
-            return config[db_config_key]
+            return os.path.expanduser(config[db_config_key])
 
     def get_db_connection(self):
         if self.connection is not None:
