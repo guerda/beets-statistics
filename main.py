@@ -155,8 +155,8 @@ class BeetsStatistics:
             artists = res.fetchall()
             cursor.close()
             return artists
-        except Exception as e:
-            raise DBQueryError(e)
+        except sqlite3.Error as e:
+            raise DBQueryError from e
 
     def get_track_count(self):
         query = """select
@@ -173,8 +173,8 @@ class BeetsStatistics:
             value = res.fetchone()
             cursor.close()
             return value[0]
-        except Exception as e:
-            raise DBQueryError(e)
+        except sqlite3.Error as e:
+            raise DBQueryError from e
 
     def get_album_count(self):
         query = """select count(1) as count from albums"""
