@@ -9,3 +9,5 @@
 * [ ] Albums w/o musicbrainz id
 * [x] bpm
 * [ ] lossless vs. lossy codecs - as filter? as info on album cards?
+* [ ] Decade overview - which decade are you?
+* [ ] bitrate distribution

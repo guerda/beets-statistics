@@ -39,3 +39,15 @@
   #footer {
     font-size: 10pt;
   }
+
+  #lossy_distribution #lossless {
+    background-color: red;
+  }
+
+  #lossy_distribution #lossy {
+    background-color: blue;
+  }
+
+  #lossy_distribution #unknown {
+    background-color: gray;
+  }

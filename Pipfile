@@ -9,9 +9,11 @@ pyyaml = "*"
 jinja2 = "*"
 humanize = "*"
 pydantic = "*"
+pydantic-settings = "*"
 
 [dev-packages]
 ruff = "*"
+pytest = "*"
 
 [requires]
 python_version = "3.9"
