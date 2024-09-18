@@ -1,53 +1,79 @@
 * {
-    font-family: sans-serif;
-  }
-  .album {
-    min-width: 200px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    border-radius: 5px;
-    margin: 0.2em;
-    transition: 0.3s;
-    display: inline-block;
-  }
-  .album:hover {
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-  }
-  .album .container {
-    padding: 0.5em;
-  }
-  .completeness {
-    border: 1px solid rgba(0, 0, 0, 0.3);
-    width: 15vw;
-    padding: 0.1em;
-  }
-  .progress-bar {
-    background-color: rgb(55, 164, 0);
-    height: 100%;
-    padding: 0.2em;
-  }
-  .invalid {
-    background-color: darkred;
-    color: white;
-  }
-  content.album-cards {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: auto;
-    gap: 0.7em;
-  }
+  font-family: sans-serif;
+}
+.album {
+  min-width: 200px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  margin: 0.2em;
+  transition: 0.3s;
+  display: inline-block;
+}
+.album:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+.album .container {
+  padding: 0.5em;
+}
+.completeness {
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  width: 15vw;
+  padding: 0.1em;
+  display: inline-flex;
+}
+.progress-bar {
+  background-color: rgb(55, 164, 0);
+  height: 100%;
+  padding: 0.2em;
+}
+.invalid {
+  background-color: darkred;
+  color: white;
+}
+content.album-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto;
+  gap: 0.7em;
+}
 
-  #footer {
-    font-size: 10pt;
-  }
+#footer {
+  padding-top: 3em;
+  font-size: 10pt;
+}
 
-  #lossy_distribution #lossless {
-    background-color: red;
-  }
+#lossy_distribution span {
+  padding: 0.2em;
+}
 
-  #lossy_distribution #lossy {
-    background-color: blue;
-  }
+#lossy_distribution #lossless {
+  background-color: var(--ultra-violet);
+  color: white;
+}
 
-  #lossy_distribution #unknown {
-    background-color: gray;
-  }
+#lossy_distribution #lossy {
+  background-color: var(--raspberry-rose);
+}
+
+#lossy_distribution #unknown {
+  background-color: var(--ash-gray);
+}
+
+:root {
+  --ultra-violet: hsla(256, 30%, 38%, 1);
+  --ash-gray: hsla(178, 21%, 73%, 1);
+  --raspberry-rose: hsla(347, 44%, 51%, 1);
+}
+
+
+navigation li {
+  display: inline;
+  padding-right: 0.7em;
+}
+navigation a {
+  padding: 0.3em;
+}
+
+navigation a:hover {
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2);
+}

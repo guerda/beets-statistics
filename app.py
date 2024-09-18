@@ -93,3 +93,20 @@ async def get_artist_stats(request: Request,
     return templates.TemplateResponse(
         request=request, name="artists.html", context={"artists": artists}
     )
+
+@app.get("/decades", response_class=HTMLResponse)
+async def get_track_decades(request: Request,
+    beets_statistics: Annotated[BeetsStatistics, Depends(get_beets_statistics)]):
+    decades, count = beets_statistics.get_track_decades()
+    return templates.TemplateResponse(
+        request=request, name="decades.html", context={"decades": decades, "track_count": count}
+    )
+
+@app.get("/quality", response_class=HTMLResponse)
+async def get_track_quality(request: Request,
+    beets_statistics: Annotated[BeetsStatistics, Depends(get_beets_statistics)]):
+    bitrates, count = beets_statistics.get_track_quality(limit=20)
+    return templates.TemplateResponse(
+        request=request, name="quality.html", context={"bitrates": bitrates, "track_count": count}
+    )
+
