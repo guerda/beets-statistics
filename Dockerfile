@@ -5,5 +5,5 @@ RUN pip install pipenv
 RUN pipenv install
 COPY templates /app/templates/
 COPY static /app/static/
-COPY main.py app.py  /app
+COPY beetsstatistics.py app.py  /app
 CMD ["pipenv", "run", "prod"]
