@@ -211,10 +211,10 @@ class BeetsStatistics:
         lossless = 0
         unknown = 0
         for file in formats:
-            if file[0] in LOSSLESS_FORMATS:
-                lossless += 1
-            elif file[0] in LOSSY_FORMATS:
-                lossy += 1
+            if file[0].lower() in LOSSLESS_FORMATS:
+                lossless += file[1]
+            elif file[0].lower() in LOSSY_FORMATS:
+                lossy += file[1]
             else:
                 unknown += 1
         return lossless, lossy, unknown
@@ -232,7 +232,8 @@ class BeetsStatistics:
             res = cursor.execute(query)
             results = res.fetchall()
             cursor.close()
-            lossless, lossy, unknown = self.map_file_format_to_lossy(results)
+            lossless, lossy, unknown = self.map_file_format_to_lossy(formats)
+            print("Lossless: {}, lossy: {}, unknown: {}".format(lossless, lossy, unknown))
             return results, lossless, lossy, unknown
         except sqlite3.Error as e:
             raise DBQueryError from e

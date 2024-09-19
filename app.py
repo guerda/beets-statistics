@@ -2,13 +2,13 @@ from fastapi import FastAPI, Request
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
-from beetsstatistics import AlbumSort
-from beetsstatistics import BeetsStatistics
+from beetsstatistics import AlbumSort, BeetsStatistics, DBNotFoundError, DBQueryError
 import humanize
 from contextlib import asynccontextmanager
 from fastapi import Depends
 from typing import Annotated
 from pydantic_settings import BaseSettings
+from fastapi import HTTPException
 
 
 class InitializationError(Exception):
@@ -23,9 +23,12 @@ beets_statistics = None
 
 async def get_beets_statistics():
     global beets_statistics
-    beets_statistics = BeetsStatistics(settings.musiclibrary_db)
-    if beets_statistics.get_db_connection() is None:
-        raise InitializationError("Could not get access database file.")
+    try:
+        beets_statistics = BeetsStatistics(settings.musiclibrary_db)
+        if beets_statistics.get_db_connection() is None:
+            raise InitializationError("Could not get access database file.")
+    except (DBNotFoundError, DBQueryError) as e :
+        raise HTTPException(status_code=500, detail="Could not find find or access database file: {}".format(e))
     try:
         yield beets_statistics
     finally:
@@ -42,15 +45,17 @@ async def get_general_stats(
     request: Request,
     beets_statistics: Annotated[BeetsStatistics, Depends(get_beets_statistics)],
 ):
-    track_count = beets_statistics.get_track_count()
-    album_count = beets_statistics.get_album_count()
-    playback_length = beets_statistics.get_playback_length()
-    playback_length_str = humanize.naturaldelta(playback_length)
+    try:
+        track_count = beets_statistics.get_track_count()
+        album_count = beets_statistics.get_album_count()
+        playback_length = beets_statistics.get_playback_length()
+        playback_length_str = humanize.naturaldelta(playback_length)
 
-    file_size_str = humanize.naturalsize(beets_statistics.get_file_size())
-    avg_bpm = beets_statistics.get_avg_bpm()
-    format_count, lossless, lossy, unknown = beets_statistics.get_track_formats()
-    print(format_count, lossless, lossy, unknown)
+        file_size_str = humanize.naturalsize(beets_statistics.get_file_size())
+        avg_bpm = beets_statistics.get_avg_bpm()
+        format_count, lossless, lossy, unknown = beets_statistics.get_track_formats()
+    except (DBQueryError, DBNotFoundError) as e:
+        raise HTTPException(status_code=500, detail="Could not query general statistics: {}".format(e))
     return templates.TemplateResponse(
         request=request,
         name="index.html",
