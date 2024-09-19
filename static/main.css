@@ -17,7 +17,7 @@
 }
 .completeness {
   border: 1px solid rgba(0, 0, 0, 0.3);
-  width: 15vw;
+  width: 60vw;
   padding: 0.1em;
   display: inline-flex;
 }
