@@ -42,20 +42,26 @@ content.album-cards {
   font-size: 10pt;
 }
 
-#lossy_distribution span {
-  padding: 0.2em;
+#lossydistribution {
+  width: 70%;
+  display: flex;
 }
 
-#lossy_distribution #lossless {
+#lossydistribution div {
+  padding: 0.2em;
+  min-width: 2em;
+}
+
+ #lossless {
   background-color: var(--ultra-violet);
   color: white;
 }
 
-#lossy_distribution #lossy {
+ #lossy {
   background-color: var(--raspberry-rose);
 }
 
-#lossy_distribution #unknown {
+ #unknown {
   background-color: var(--ash-gray);
 }
 

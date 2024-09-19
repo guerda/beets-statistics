@@ -1,7 +1,6 @@
 import sqlite3
 import yaml
 import os
-from pprint import pprint
 import argparse
 import os.path
 from enum import Enum
@@ -216,7 +215,7 @@ class BeetsStatistics:
             elif file[0].lower() in LOSSY_FORMATS:
                 lossy += file[1]
             else:
-                unknown += 1
+                unknown += file[1]
         return lossless, lossy, unknown
 
     def get_track_formats(self):
@@ -232,12 +231,13 @@ class BeetsStatistics:
             res = cursor.execute(query)
             results = res.fetchall()
             cursor.close()
-            lossless, lossy, unknown = self.map_file_format_to_lossy(formats)
-            print("Lossless: {}, lossy: {}, unknown: {}".format(lossless, lossy, unknown))
+            lossless, lossy, unknown = self.map_file_format_to_lossy(results)
+            print(
+                "Lossless: {}, lossy: {}, unknown: {}".format(lossless, lossy, unknown)
+            )
             return results, lossless, lossy, unknown
         except sqlite3.Error as e:
             raise DBQueryError from e
-
 
     def get_track_decades(self):
         try:
@@ -257,7 +257,7 @@ class BeetsStatistics:
 
             count = self._query_one_value("""SELECT count(1) from items i;""")
             return results, count
-            
+
         except sqlite3.Error as e:
             raise DBQueryError from e
 
@@ -280,7 +280,7 @@ class BeetsStatistics:
 
             count = self._query_one_value("""SELECT count(1) from items i;""")
             return results, count
-            
+
         except sqlite3.Error as e:
             raise DBQueryError from e
 

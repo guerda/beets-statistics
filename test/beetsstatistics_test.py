@@ -9,41 +9,35 @@ def beets_statistics():
 
 def test_map_format_to_lossy_lossless_lossless(beets_statistics: BeetsStatistics):
     formats = [
-        ("mp3", 1),
-        ("mp3", 1),
-        ("mp3", 1),
-        ("ogg", 1),
-        ("flac", 1),
-        ("wav", 1),
-        ("hurz", 1),
+        ("mp3", 5),
+        ("ogg", 3),
+        ("flac", 7),
+        ("wav", 11),
+        ("hurz", 2),
     ]
     lossless, _, _ = beets_statistics.map_file_format_to_lossy(formats)
-    assert lossless == 2
+    assert lossless == 18
 
 
 def test_map_format_to_lossy_lossless_lossy(beets_statistics: BeetsStatistics):
     formats = [
-        ("mp3", 1),
-        ("mp3", 1),
-        ("mp3", 1),
-        ("ogg", 1),
-        ("flac", 1),
-        ("wav", 1),
-        ("hurz", 1),
+        ("mp3", 5),
+        ("ogg", 3),
+        ("flac", 7),
+        ("wav", 11),
+        ("hurz", 2),
     ]
     _, lossy, _ = beets_statistics.map_file_format_to_lossy(formats)
-    assert lossy
+    assert lossy == 8
 
 
 def test_map_format_to_lossy_lossless_unknown(beets_statistics: BeetsStatistics):
     formats = [
-        ("mp3", 1),
-        ("mp3", 1),
-        ("mp3", 1),
-        ("ogg", 1),
-        ("flac", 1),
-        ("wav", 1),
-        ("hurz", 1),
+        ("mp3", 5),
+        ("ogg", 3),
+        ("flac", 7),
+        ("wav", 11),
+        ("hurz", 2),
     ]
     _, _, unknown = beets_statistics.map_file_format_to_lossy(formats)
-    assert unknown == 1
+    assert unknown == 2

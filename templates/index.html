@@ -22,10 +22,10 @@
         <li>{{format.format}} - {{format.count}}</li>
         {% endfor %}
       </ul>
-      <div id="lossy_distribution">
-        <span id="lossless" style="width: {{lossless}}fr">{{lossless}}</span>
-        <span id="lossy" style="width: {{lossy}}fr">{{lossy}}</span>
-        <span id="unknown" style="width: {{unknown}}fr">{{unknown}}</span>
+      <div id="lossydistribution">
+        <div id="lossless" style="width: {{lossless/track_count*100}}%">{{lossless}}</div>
+        <div id="lossy" style="width: {{lossy/track_count*100}}%">{{lossy}}</div>
+        <div id="unknown" style="width: {{unknown/track_count*100}}%">{{unknown}}</div>
       </div>
 
     </content>
