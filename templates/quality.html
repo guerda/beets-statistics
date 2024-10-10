@@ -10,20 +10,34 @@
   <body>
     {% include 'navigation.html' %}
     <content>
-      <h2>Genres</h2>
-      <table>
-      {% for bitrate in bitrates %}
-        <tr>
-          <td style="text-align: right;">{{bitrate.bitrate}}</td>
-          <td>
-            <div class="completeness">
-              <div class="progress-bar" style="width:{{100*bitrate.count/track_count|round}}%;">
-                {{bitrate.count}}
-              </div>
-            </div>
-          </td>
-        </tr>
-      {% endfor %}
+      <h2>Quality per track</h2>
+      <table class="data-table  ">
+        <colgroup>
+          <col>
+          <col class="progress-bar-col">
+        </colgroup>
+        <thead>
+
+        </thead>
+
+        <tbody>
+          <tr>
+            <th>Bitrate [kbit/s]</th>
+            <th>Number of tracks</th>
+          </tr>
+          {% for bitrate in bitrates %}
+            <tr>
+              <td style="text-align: right;">{{bitrate.bitrate}}</td>
+              <td>
+                <div class="completeness">
+                  <div class="progress-bar" style="width:{{100*bitrate.count/track_count|round}}%;">
+                    {{bitrate.count}}
+                  </div>
+                </div>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
       </table>
     </content>
     {% include 'footer.html' %}

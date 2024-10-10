@@ -11,20 +11,29 @@
     {% include 'navigation.html' %}
     <content>
       <h2>Genres</h2>
-      <table>
-      {% for genre in genres[0] %}
-      
-        <tr>
-          <td>{{genre.genre}}</td>
-          <td>
-            <div class="completeness">
-              <div class="progress-bar" style="width:{{100.0*genre.count/genres[1]|round}}%;">
-                {{genre.count}}
+      <table class="data-table">
+        <colgroup>
+          <col>
+          <col class="progress-bar-col">
+        </colgroup>  
+        <tbody>
+          <tr>
+            <th>Genre</th>
+            <th>Number of albums</th>
+        {% for genre in genres[0] %}
+        
+          <tr>
+            <td>{{genre.genre}}</td>
+            <td>
+              <div class="completeness">
+                <div class="progress-bar" style="width:{{100.0*genre.count/genres[1]|round}}%;">
+                  {{genre.count}}
+                </div>
               </div>
-            </div>
-          </td>
-        </tr>
-      {% endfor %}
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
       </table>
     </content>
     {% include 'footer.html' %}

@@ -94,6 +94,8 @@ navigation a {
   padding: 0.7em;
   background: var(--nav-gradient);
   border-radius: 5px;
+  color: white;
+  text-decoration: none;
 }
 
 navigation a:hover {
@@ -109,8 +111,8 @@ navigation a:hover {
   transition: 0.3s;
   display: inline-block;
   min-height: 130px;
-
   background: var(--card-gradient);
+  color: white;
 }
 .insights div:hover {
   box-shadow: 0 10px 18px 0 rgba(0, 0, 0, 0.2);
@@ -125,4 +127,12 @@ navigation a:hover {
     transform-origin: -100% 0%;
     transform: scaleX(100%);
   }
+}
+
+table.data-table {
+  width: 80%;
+}
+
+table.data-table col.progress-bar-col {
+  width: 50%;
 }

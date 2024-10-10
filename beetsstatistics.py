@@ -106,6 +106,8 @@ class BeetsStatistics:
             result.append(return_album)
         return result
 
+        """ By album
+        """
     def get_genre_count(self, limit: int = 0):
         try:
             cursor = self.get_db_connection().cursor()
@@ -265,7 +267,7 @@ class BeetsStatistics:
         try:
             cursor = self.get_db_connection().cursor()
             query = """SELECT
-                        bitrate / 10000*10000 as bitrate,
+                        bitrate / 10000*10000 / 1000 as bitrate,
                         count(1) AS count
                     FROM
                         items i

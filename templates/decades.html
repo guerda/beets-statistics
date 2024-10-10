@@ -11,8 +11,18 @@
     {% include 'navigation.html' %}
     <content>
       <h2>Genres</h2>
-      <table>
+      <table class="data-table">
+        <colgroup>
+          <col>
+          <col class="progress-bar-col">
+      </colgroup>
+      <tbody>
+        <tr>
+          <th>Decade</th>
+          <th>Number of tracks</th>
+        </tr>
       {% for decade in decades %}
+
         <tr>
           <td>{{decade.decade}}</td>
           <td>
@@ -24,6 +34,7 @@
           </td>
         </tr>
       {% endfor %}
+      </tbody>
       </table>
     </content>
     {% include 'footer.html' %}
