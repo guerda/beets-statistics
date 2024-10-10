@@ -8,6 +8,7 @@
   margin: 0.2em;
   transition: 0.3s;
   display: inline-block;
+  background: var(--ash-gray);
 }
 .album:hover {
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
@@ -135,4 +136,13 @@ table.data-table {
 
 table.data-table col.progress-bar-col {
   width: 50%;
+}
+
+.album-genre {
+  padding: 0.3em;
+  font-style: italic;
+}
+
+.album-title {
+  margin-top: 0.3em;
 }

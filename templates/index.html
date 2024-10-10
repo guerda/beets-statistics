@@ -19,18 +19,19 @@
       <div>{{avg_bpm}} BPM on average</div>
       </div>
       <h3>File formats</h3>
+      <p>
       <ul>
         {% for format in format_count %}
-        <li>{{format.format}} - {{format.count}}</li>
+        <li>{{format.format}}: {{format.count}} tracks</li>
         {% endfor %}
       </ul>
       <div id="lossydistribution">
-        <div id="lossless" style="width: {{lossless/track_count*100}}%">{{lossless}}</div>
-        <div id="lossy" style="width: {{lossy/track_count*100}}%">{{lossy}}</div>
-        <div id="unknown" style="width: {{unknown/track_count*100}}%">{{unknown}}</div>
+        <div id="lossless" title="{{lossless}} tracks in lossless formats" style="width: {{lossless/track_count*100}}%">{{lossless}}</div>
+        <div id="lossy" title="{{lossy}} tracks in lossy formats" style="width: {{lossy/track_count*100}}%">{{lossy}}</div>
+        <div id="unknown" title="{{unknown}} tracks in unknown formats" style="width: {{unknown/track_count*100}}%">{{unknown}}</div>
       </div>
 
     </content>
-{% include 'footer.html' %}
+    {% include 'footer.html' %}
   </body>
 </html>

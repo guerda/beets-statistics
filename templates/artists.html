@@ -11,11 +11,29 @@
     {% include 'navigation.html' %}
     <content>
       <h2>Artists</h2>
-      <ul>
-      {% for artist in artists %}
-        <li>{{artist.artist}} - {{artist.track_count}}</li>
-      {% endfor %}
-      </content>
+      <table class="data-table">
+        <colgroup>
+          <col />
+          <col class="progress-bar-col" />
+        </colgroup>
+        <tbody>
+          <tr>
+            <th>Artist</th>
+            <th>Number of tracks</th>
+          </tr>
+          {% for artist in artists %}
+          <tr>
+            <td>{{artist.artist}}</td>
+            <td><div class="completeness">
+              <div class="progress-bar" style="width:{{100*artist.track_count/track_count|round}}%;">
+                {{artist.track_count}}
+              </div>
+            </div></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </content>
     {% include 'footer.html' %}
   </body>
 </html>
