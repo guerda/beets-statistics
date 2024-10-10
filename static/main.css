@@ -17,7 +17,7 @@
 }
 .completeness {
   border: 1px solid rgba(0, 0, 0, 0.3);
-  width: 60vw;
+  width: 60%;
   padding: 0.1em;
   display: inline-flex;
 }
@@ -25,6 +25,7 @@
   background-color: rgb(55, 164, 0);
   height: 100%;
   padding: 0.2em;
+  animation: grow-bar 1.5s;
 }
 .invalid {
   background-color: darkred;
@@ -52,16 +53,16 @@ content.album-cards {
   min-width: 2em;
 }
 
- #lossless {
+#lossless {
   background-color: var(--ultra-violet);
   color: white;
 }
 
- #lossy {
+#lossy {
   background-color: var(--raspberry-rose);
 }
 
- #unknown {
+#unknown {
   background-color: var(--ash-gray);
 }
 
@@ -69,17 +70,59 @@ content.album-cards {
   --ultra-violet: hsla(256, 30%, 38%, 1);
   --ash-gray: hsla(178, 21%, 73%, 1);
   --raspberry-rose: hsla(347, 44%, 51%, 1);
-}
+  --buff: hsla(21, 69%, 73%, 1);
+  --atomic-tangerine: hsla(20, 100%, 76%, 1);
 
+  --card-gradient: linear-gradient(
+    160deg,
+    var(--ultra-violet) 0%,
+    var(--raspberry-rose) 60%
+  );
+  --nav-gradient: linear-gradient(
+    180deg,
+    var(--buff) 0%,
+    var(--raspberry-rose) 100%
+  );
+}
 
 navigation li {
   display: inline;
+  padding: 0.7 em;
   padding-right: 0.7em;
 }
 navigation a {
-  padding: 0.3em;
+  padding: 0.7em;
+  background: var(--nav-gradient);
+  border-radius: 5px;
 }
 
 navigation a:hover {
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2);
+}
+
+.insights div {
+  min-width: 200px;
+  box-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  margin: 1em;
+  padding: 1.5em;
+  transition: 0.3s;
+  display: inline-block;
+  min-height: 130px;
+
+  background: var(--card-gradient);
+}
+.insights div:hover {
+  box-shadow: 0 10px 18px 0 rgba(0, 0, 0, 0.2);
+}
+
+@keyframes grow-bar {
+  from {
+    transform-origin: -100% 0%;
+    transform: scaleX(0%);
+  }
+  to {
+    transform-origin: -100% 0%;
+    transform: scaleX(100%);
+  }
 }

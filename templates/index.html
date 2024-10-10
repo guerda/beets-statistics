@@ -11,11 +11,13 @@
     {% include 'navigation.html' %}
     <content>
       <h2>General insights</h2>
+      <div class="insights">
       <div>{{track_count}} tracks</div>
       <div>{{album_count}} albums</div>
       <div>{{playback_length}} playback length</div>
       <div>{{file_size}} disk storage</div>
       <div>{{avg_bpm}} BPM on average</div>
+      </div>
       <h3>File formats</h3>
       <ul>
         {% for format in format_count %}
