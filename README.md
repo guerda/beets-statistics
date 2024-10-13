@@ -2,13 +2,13 @@
 
 ## Intro
 
-A neat music library is a great thing.
-Wouldn't be insights on such a library be great?
+A well maintained music library is a great thing.
+Wouldn't insights on such a library be great?
 With [beets](https://beets.io) you can manage and relate your music files to MusicBrainz IDs with all their great metadata.
 
-What's this project, you can fire up a simple web page, which shows how many jazz albums you have, what the quality factor of your library is and how your top decade of music is.
+This project, _beets statistics_, offers a simple web page, which shows how many jazz albums you have, what the quality factor of your library is and what your top decade of music is.
 
-In order to work, beets-statistics needs a beets library.
+In order to work, beets-statistics needs a beets library, so you should import all your music files with beets first.
 
 ## What does beets-statistics look like?
 
@@ -54,3 +54,11 @@ Installing the necessary tools via `pipenv install --dev` gets you along.
 
 You can start the web server in dev mode via
 `pipenv run dev`
+
+If you have a correction or an issue, open an issue here or contact me directly.
+A PR in a separater branch in your fork goes a long way, so feel free to open it up.
+
+
+# License
+
+This project is licensed under GNU GPL 3.0.
