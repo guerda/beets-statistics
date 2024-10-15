@@ -14,20 +14,13 @@ In order to work, beets-statistics needs a beets library, so you should import a
 
 Here's a couple of screenshot showing beets-statistics in action:
 
-General statistics about the music library
-![Screenshot of a web page. Title is "Beets Statistics", then six navigation cards with "Home", "Albums", "Genres", "Artists", "Decades" and "Quality" are listed. Below a smaller headline "General insights". Then you see five cards in masonry layout with a purple to warm orange red gradient background. In white letters, the statistics are written on each of the cards: 9907 tracks, 1088 albums, 1 month, 1 days, 4 hours, 8 minutes and 10 seconds playback length, 60.5 GB disk usage and 134 BPM on average](img/screenshot-general-statistics.png)
+| General statistics about the music library | Complete album list | Top genre list |
+|-|-|-|
+| ![Screenshot of a web page. Title is "Beets Statistics", then six navigation cards with "Home", "Albums", "Genres", "Artists", "Decades" and "Quality" are listed. Below a smaller headline "General insights". Then you see five cards in masonry layout with a purple to warm orange red gradient background. In white letters, the statistics are written on each of the cards: 9907 tracks, 1088 albums, 1 month, 1 days, 4 hours, 8 minutes and 10 seconds playback length, 60.5 GB disk usage and 134 BPM on average](img/screenshot-general-statistics.png) | ![Screenshot of a web page with nine cards in masonry layout. The cards have a greenish-mint background. Each card represents an album with the first line stating the album title in bold face, then the release year and the album artist. Last line shows the genre in italic style. Below the text, a green progress bar with a percentage is displayed. If the percentage is larger than 100%, the bar is red.](img/screenshot-albums.png) | ![Screenshot of a web page with headline "Genres". Below a table with two colums. The colums are titled "Genre" and "Number of albums". The first column contains Genres like Electronic, House, Rock, n/a, Punk Rock etc. The second colum shows green progress bars per row and the number of albums. The size of the progress bar represents the number of albums.](img/screenshot-genres.png) |
 
-Complete album list
-![Screenshot of a web page with nine cards in masonry layout. The cards have a greenish-mint background. Each card represents an album with the first line stating the album title in bold face, then the release year and the album artist. Last line shows the genre in italic style. Below the text, a green progress bar with a percentage is displayed. If the percentage is larger than 100%, the bar is red.](img/screenshot-albums.png)
-
-Top genre list
-![Screenshot of a web page with headline "Genres". Below a table with two colums. The colums are titled "Genre" and "Number of albums". The first column contains Genres like Electronic, House, Rock, n/a, Punk Rock etc. The second colum shows green progress bars per row and the number of albums. The size of the progress bar represents the number of albums.](img/screenshot-genres.png)
-
-Genre distribution
-![Screenshot of a web page with a table with two colums. The columns are titled "Decade" and "Number of tracks". The decades listed are 0, 1960, 1970, until 2020 and 2930. The green progress bars per row are representing the number of tracks per decade in comparison to the total number of tracks. Largest bar is 5270 tracks in the 2000 decade.](img/screenshot-decades.png)
-
-Bitrate distribution
-![Screenshot of a web page with a table with two colums. The colums are titled "Bitrate [kbit/s]" and "Number of tracks". The bitrate buckets are listing bitrates from 1410 down to 160 kbit/s. The green progress bar represents the number of tracks in comparison to the total number of tracks. The largest progress bar is at 190 kbit/s with 1752 tracks.](img/screenshot-bitrate.png)
+| Genre distribution | Bitrate distribution |
+|-|-|
+| ![Screenshot of a web page with a table with two colums. The columns are titled "Decade" and "Number of tracks". The decades listed are 0, 1960, 1970, until 2020 and 2930. The green progress bars per row are representing the number of tracks per decade in comparison to the total number of tracks. Largest bar is 5270 tracks in the 2000 decade.](img/screenshot-decades.png) | ![Screenshot of a web page with a table with two colums. The colums are titled "Bitrate [kbit/s]" and "Number of tracks". The bitrate buckets are listing bitrates from 1410 down to 160 kbit/s. The green progress bar represents the number of tracks in comparison to the total number of tracks. The largest progress bar is at 190 kbit/s with 1752 tracks.](img/screenshot-bitrate.png) | 
 
 
 ## How to run beets statistics?
