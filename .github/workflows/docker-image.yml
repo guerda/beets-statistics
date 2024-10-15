@@ -1,12 +1,12 @@
 name: Docker Image CI
 
 on:
-  workflow_dispatch
-  inputs:
-    image_version:
-      description: 'Image version'
-      required: true
-      default: '0.0.1'
+  workflow_dispatch:
+    inputs:
+      image_version:
+        description: 'Image version'
+        required: true
+        default: '0.0.1'
 
 jobs:
 
