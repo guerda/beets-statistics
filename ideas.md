@@ -13,3 +13,7 @@
 * [ ] Decade overview - which decade are you? top decade
 * [x] bitrate distribution
 * [ ] duplicates
+* [ ] Number of genres and subgenres represented
+* [ ] Genre diversity score (unclear what is meant here)
+* [ ] Percentage of tracks with complete metadata (e.g., album art, lyrics, release year)
+* [ ] Percentage of various artists compilations
