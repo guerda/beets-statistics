@@ -97,6 +97,8 @@ navigation a {
   border-radius: 5px;
   color: white;
   text-decoration: none;
+  display: inline-block;
+  margin-top: 0.15em;
 }
 
 navigation a:hover {
