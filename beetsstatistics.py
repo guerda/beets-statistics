@@ -286,6 +286,26 @@ class BeetsStatistics:
         except sqlite3.Error as e:
             raise DBQueryError from e
 
+    def get_genre_decade_heatmap(self):
+        try:
+            cursor = self.get_db_connection().cursor()
+            query = """select 
+                            genre, 
+                            YEAR / 10 * 10 as decade, 
+                            count(1) as count
+                        from albums 
+                        where genre != '' and year > 0
+                        group by 1,2 
+                        order by 1,2 asc"""
+            res = cursor.execute(query)
+            results = res.fetchall()
+            cursor.close()
+
+            return results
+        except sqlite3.Error as e:
+            raise DBQueryError from e
+
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(prog="beets-statistics")
