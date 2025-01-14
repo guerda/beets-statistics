@@ -110,7 +110,9 @@ async def get_artist_stats(
     artists = beets_statistics.get_artist_stats(limit=100)
     count = beets_statistics.get_track_count()
     return templates.TemplateResponse(
-        request=request, name="artists.html", context={"artists": artists, "track_count": count}
+        request=request,
+        name="artists.html",
+        context={"artists": artists, "track_count": count},
     )
 
 
@@ -137,4 +139,40 @@ async def get_track_quality(
         request=request,
         name="quality.html",
         context={"bitrates": bitrates, "track_count": count},
+    )
+
+@app.get("/genre-decade-heatmap", response_class=HTMLResponse)
+async def get_genre_decade_heatmap(
+    request: Request,
+    beets_statistics: Annotated[BeetsStatistics, Depends(get_beets_statistics)]
+):
+    results = beets_statistics.get_genre_decade_heatmap()
+
+    min_decade = 9999
+    max_decade = 0
+    max_genre_count = 0
+    heatmap = {}
+    
+    for result in results:
+        min_decade = min(min_decade, result['decade'])
+        max_decade = max(max_decade, result['decade'])
+        max_genre_count = max(max_genre_count, result['count'])
+
+        if result['genre'] not in heatmap:
+            heatmap[result['genre']] = {}
+        
+        heatmap[result['genre']][result['decade']] = result['count']
+
+    # Fill out sparse table
+    for genre in heatmap:
+        for decade in range(min_decade, max_decade+1, 10):
+            if decade not in heatmap[genre]:
+                heatmap[genre][decade] = 0
+
+    print(heatmap)
+
+    return templates.TemplateResponse(
+        request=request,
+        name="genre-decade-heatmap.html",
+        context={"heatmap": heatmap, "decades": range(min_decade, max_decade+1, 10), "max_genre_count": max_genre_count},
     )
