@@ -123,11 +123,11 @@ navigation a:hover {
 
 @keyframes grow-bar {
   from {
-    transform-origin: -100% 0%;
+    transform-origin: 0% 0%;
     transform: scaleX(0%);
   }
   to {
-    transform-origin: -100% 0%;
+    transform-origin: 0% 0%;
     transform: scaleX(100%);
   }
 }
