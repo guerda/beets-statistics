@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Request
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import HTMLResponse
+from fastapi.responses import FileResponse, HTMLResponse
 from beetsstatistics import AlbumSort, BeetsStatistics, DBNotFoundError, DBQueryError
 import humanize
 from fastapi import Depends
@@ -176,3 +176,10 @@ async def get_genre_decade_heatmap(
         name="genre-decade-heatmap.html",
         context={"heatmap": heatmap, "decades": range(min_decade, max_decade+1, 10), "max_genre_count": max_genre_count},
     )
+
+@app.get("/cover/{album_id}", response_class=FileResponse)
+async def get_album_cover(album_id: str, beets_statistics: Annotated[BeetsStatistics, Depends(get_beets_statistics)]):
+    album_cover_path = beets_statistics.get_album_cover_path(album_id)
+    if album_cover_path is None:
+        album_cover_path = "static/blank.jpg"
+    return album_cover_path
