@@ -19,7 +19,7 @@ class DBQueryError(Exception):
 
 class Album:
     def __repr__(self):
-        return f"ID: {self.id}, Title: {self.title}, Tracks: {self.tracks}/{self.track_total} ({self.complete_percentage}%), Album artist: {self.album_artist}, Genre: {self.genre}, Year: {self.year} ({self.original_year})"
+        return f"ID: {self.id}, Title: {self.title}, Tracks: {self.tracks}/{self.track_total} ({self.complete_percentage}%), Album artist: {self.album_artist}, Genre: {self.genre}, Year: {self.year} ({self.original_year}), Album Art: {self.album_cover}"
 
 
 class AlbumSort(Enum):
@@ -179,7 +179,10 @@ class BeetsStatistics:
             res = cursor.execute(query)
             value = res.fetchone()
             cursor.close()
-            return value[0]
+            if value is not None:
+                return value[0]
+            else:
+                return None
         except sqlite3.Error as e:
             raise DBQueryError from e
 
@@ -306,6 +309,13 @@ class BeetsStatistics:
             raise DBQueryError from e
 
 
+    def get_album_cover_path(self, album_id: int):
+        query = """select artpath from albums where id = {}""".format(album_id)
+        path = self._query_one_value(query)
+        print(query)
+        print("{} -> {}".format(album_id, path))
+        return path
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(prog="beets-statistics")
@@ -322,3 +332,5 @@ if __name__ == "__main__":
         print("{} - {}".format(artist["track_count"], artist["artist"]))
 
     bs.close()
+
+
