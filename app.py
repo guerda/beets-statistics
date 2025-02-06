@@ -113,11 +113,16 @@ async def get_artist_stats(
     beets_statistics: Annotated[BeetsStatistics, Depends(get_beets_statistics)],
 ):
     artists = beets_statistics.get_artist_stats(limit=100)
+    artist_list = []
+    count_list = []
+    for artist in artists:
+        artist_list.append(artist["artist"])
+        count_list.append(artist["track_count"])
     count = beets_statistics.get_track_count()
     return templates.TemplateResponse(
         request=request,
         name="artists.html",
-        context={"artists": artists, "track_count": count},
+        context={"artists": artists, "track_count": count, "artist_list": artist_list, "count_list": count_list},
     )
 
 
