@@ -1,0 +1,8 @@
+{
+    "name": "beets-statistics-dummy",
+    "version": "0.0.1",
+    "description": "This package.json is only intended to let dependabot scan the vulnerabilities. Updates must be fixed manually",
+    "dependencies": {
+      "plotly.js": "3.0.0"
+    }
+  }
