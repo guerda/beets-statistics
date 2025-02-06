@@ -131,11 +131,11 @@ async def get_track_decades(
     request: Request,
     beets_statistics: Annotated[BeetsStatistics, Depends(get_beets_statistics)],
 ):
-    decades, count = beets_statistics.get_track_decades()
+    decades = beets_statistics.get_track_decades()
     return templates.TemplateResponse(
         request=request,
         name="decades.html",
-        context={"decades": decades, "track_count": count},
+        context={"decades": decades},
     )
 
 
