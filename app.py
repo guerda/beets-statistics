@@ -144,11 +144,14 @@ async def get_track_quality(
     request: Request,
     beets_statistics: Annotated[BeetsStatistics, Depends(get_beets_statistics)],
 ):
-    bitrates, count = beets_statistics.get_track_quality(limit=20)
+    bitrates = beets_statistics.get_track_quality()
+    quality_list = []
+    for bitrate in bitrates:
+        quality_list.append(bitrate["bitrate"])
     return templates.TemplateResponse(
         request=request,
         name="quality.html",
-        context={"bitrates": bitrates, "track_count": count},
+        context={"quality_list": quality_list},
     )
 
 @app.get("/genre-decade-heatmap", response_class=HTMLResponse)
