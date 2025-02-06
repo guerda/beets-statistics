@@ -107,16 +107,17 @@ navigation a:hover {
 }
 
 .insights div {
-  min-width: 200px;
+  min-width: 10em;
   box-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.2);
   border-radius: 12px;
-  margin: 1em;
+  margin: 0.3em;
   padding: 1.5em;
   transition: 0.3s;
   display: inline-block;
-  min-height: 130px;
+  min-height: 5em;
   background: var(--card-gradient);
   color: white;
+  max-width: 15em;
 }
 .insights div:hover {
   box-shadow: 0 10px 18px 0 rgba(0, 0, 0, 0.2);
