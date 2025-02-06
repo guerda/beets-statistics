@@ -19,7 +19,7 @@ pytest = "*"
 python_version = "3.11"
 
 [scripts]
-dev = "pipenv run fastapi dev app.py"
+dev = "pipenv run fastapi dev app.py --host 0.0.0.0"
 prod = "pipenv run fastapi run app.py"
 rc = "pipenv run ruff check ."
 rf = "pipenv run ruff format ."

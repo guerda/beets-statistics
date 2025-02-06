@@ -3,6 +3,7 @@
 }
 .album {
   min-width: 200px;
+  max-width: 217px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   border-radius: 5px;
   margin: 0.2em;
@@ -124,11 +125,11 @@ navigation a:hover {
 
 @keyframes grow-bar {
   from {
-    transform-origin: -100% 0%;
+    transform-origin: 0% 0%;
     transform: scaleX(0%);
   }
   to {
-    transform-origin: -100% 0%;
+    transform-origin: 0% 0%;
     transform: scaleX(100%);
   }
 }
@@ -148,4 +149,7 @@ table.data-table col.progress-bar-col {
 
 .album-title {
   margin-top: 0.3em;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
