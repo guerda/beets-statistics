@@ -11,29 +11,24 @@
     {% include 'navigation.html' %}
     <content>
       <h2>Artists</h2>
-      <table class="data-table">
-        <colgroup>
-          <col />
-          <col class="progress-bar-col" />
-        </colgroup>
-        <tbody>
-          <tr>
-            <th>Artist</th>
-            <th>Number of tracks</th>
-          </tr>
-          {% for artist in artists %}
-          <tr>
-            <td>{{artist.artist}}</td>
-            <td><div class="completeness">
-              <div class="progress-bar" style="width:{{100*artist.track_count/track_count|round}}%;">
-                {{artist.track_count}}
-              </div>
-            </div></td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+      <div id="plot"></div>
     </content>
     {% include 'footer.html' %}
+    <script>
+      var artist_data = [{
+        type: 'bar',
+        orientation: 'h',
+        y: [{% for artist in artist_list %}"{{artist}}", {% endfor %}],
+        x: {{count_list}}
+      }];
+      var layout = {
+        yaxis:{
+          autorange:'reversed',
+          automargin: 'width'
+        }
+      };
+      Plotly.newPlot("plot", artist_data, layout);
+    </script>
+
   </body>
 </html>
