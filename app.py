@@ -97,8 +97,13 @@ async def get_genre_count(
     beets_statistics: Annotated[BeetsStatistics, Depends(get_beets_statistics)],
 ):
     genres = beets_statistics.get_genre_count(limit=20)
+    genre_list = []
+    count_list = []
+    for genre in genres[0]:
+        genre_list.append(genre["genre"])
+        count_list.append(genre["count"])
     return templates.TemplateResponse(
-        request=request, name="genres.html", context={"genres": genres}
+        request=request, name="genres.html", context={"genres": genres, "genre_list": genre_list, "count_list": count_list}
     )
 
 
