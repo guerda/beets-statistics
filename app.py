@@ -166,6 +166,7 @@ async def get_genre_decade_heatmap(
     max_genre_count = 0
     heatmap = {}
     
+    genre_list = []
     for result in results:
         min_decade = min(min_decade, result['decade'])
         max_decade = max(max_decade, result['decade'])
@@ -173,6 +174,7 @@ async def get_genre_decade_heatmap(
 
         if result['genre'] not in heatmap:
             heatmap[result['genre']] = {}
+            genre_list.append(result['genre'])
         
         heatmap[result['genre']][result['decade']] = result['count']
 
@@ -182,12 +184,10 @@ async def get_genre_decade_heatmap(
             if decade not in heatmap[genre]:
                 heatmap[genre][decade] = 0
 
-    print(heatmap)
-
     return templates.TemplateResponse(
         request=request,
         name="genre-decade-heatmap.html",
-        context={"heatmap": heatmap, "decades": range(min_decade, max_decade+1, 10), "max_genre_count": max_genre_count},
+        context={"heatmap": heatmap, "decades": range(min_decade, max_decade+1, 10), "genre_list": genre_list, "max_genre_count": max_genre_count},
     )
 
 @app.get("/cover/{album_id}", response_class=FileResponse)
