@@ -11,6 +11,7 @@
     {% include 'navigation.html' %}
     <content>
       <h2>Genre Decade Heatmap</h2>
+      <div id="plot"></div>
       <table>
         <tr>
           <th>Genre</th>
@@ -31,5 +32,23 @@
     </table>
     </content>
     {% include 'footer.html' %}
+    <script>
+      var heatmap_data = [{
+        type: 'heatmap',
+        x: [{% for decade in decades %}"{{decade}}", {% endfor %}],
+        y: [{% for genre in genre_list %}"{{genre}}", {% endfor %}],
+        z: [{% for genre in heatmap%}[{% for decade in heatmap[genre] %}{{heatmap[genre][decade]}}, {% endfor %}], {% endfor %}],
+        hoverongaps: false
+      }];
+      var layout = {
+        yaxis: {
+          automargin: "width",
+          autorange:'reversed'
+        }
+      };
+      Plotly.newPlot("plot", heatmap_data, layout);
+    </script>
+
+
   </body>
 </html>
