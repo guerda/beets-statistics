@@ -183,3 +183,12 @@ async def get_album_cover(album_id: str, beets_statistics: Annotated[BeetsStatis
     if album_cover_path is None:
         album_cover_path = "static/blank.jpg"
     return album_cover_path
+
+@app.get("/added-timeline", response_class=HTMLResponse)
+async def get_added_timeline(request: Request, beets_statistics: Annotated[BeetsStatistics, Depends(get_beets_statistics)]):
+    timeline = beets_statistics.get_added_timeline()
+    return templates.TemplateResponse(
+        request = request,
+        name="added-timeline.html",
+        context={"timeline": timeline},
+    )

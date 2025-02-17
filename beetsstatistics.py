@@ -316,6 +316,17 @@ class BeetsStatistics:
         print("{} -> {}".format(album_id, path))
         return path
 
+    def get_added_timeline(self):
+        try:
+            cursor = self.get_db_connection().cursor()
+            query = """select datetime(added, 'unixepoch') as added from items;"""
+            cursor.execute(query)
+            results = cursor.fetchall()
+            cursor.close()
+            return results
+        except sqlite3.Error as e:
+            raise DBQueryError from e
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(prog="beets-statistics")
