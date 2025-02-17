@@ -131,11 +131,11 @@ async def get_track_decades(
     request: Request,
     beets_statistics: Annotated[BeetsStatistics, Depends(get_beets_statistics)],
 ):
-    decades = beets_statistics.get_track_decades()
+    decades, count = beets_statistics.get_track_decades()
     return templates.TemplateResponse(
         request=request,
         name="decades.html",
-        context={"decades": decades},
+        context={"decades": decades, "track_count": count},
     )
 
 
@@ -144,14 +144,11 @@ async def get_track_quality(
     request: Request,
     beets_statistics: Annotated[BeetsStatistics, Depends(get_beets_statistics)],
 ):
-    bitrates = beets_statistics.get_track_quality()
-    quality_list = []
-    for bitrate in bitrates:
-        quality_list.append(bitrate["bitrate"])
+    bitrates, count = beets_statistics.get_track_quality(limit=20)
     return templates.TemplateResponse(
         request=request,
         name="quality.html",
-        context={"quality_list": quality_list},
+        context={"bitrates": bitrates, "track_count": count},
     )
 
 @app.get("/genre-decade-heatmap", response_class=HTMLResponse)
@@ -166,7 +163,6 @@ async def get_genre_decade_heatmap(
     max_genre_count = 0
     heatmap = {}
     
-    genre_list = []
     for result in results:
         min_decade = min(min_decade, result['decade'])
         max_decade = max(max_decade, result['decade'])
@@ -174,7 +170,6 @@ async def get_genre_decade_heatmap(
 
         if result['genre'] not in heatmap:
             heatmap[result['genre']] = {}
-            genre_list.append(result['genre'])
         
         heatmap[result['genre']][result['decade']] = result['count']
 
@@ -184,10 +179,12 @@ async def get_genre_decade_heatmap(
             if decade not in heatmap[genre]:
                 heatmap[genre][decade] = 0
 
+    print(heatmap)
+
     return templates.TemplateResponse(
         request=request,
         name="genre-decade-heatmap.html",
-        context={"heatmap": heatmap, "decades": range(min_decade, max_decade+1, 10), "genre_list": genre_list, "max_genre_count": max_genre_count},
+        context={"heatmap": heatmap, "decades": range(min_decade, max_decade+1, 10), "max_genre_count": max_genre_count},
     )
 
 @app.get("/cover/{album_id}", response_class=FileResponse)
