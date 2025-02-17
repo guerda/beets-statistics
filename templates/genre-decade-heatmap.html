@@ -12,6 +12,7 @@
     <content>
       <h2>Genre Decade Heatmap</h2>
       <div id="plot"></div>
+      {% for genre in genre_list %}"{{genre}}",<br /> {% endfor %}
       <table>
         <tr>
           <th>Genre</th>
@@ -43,7 +44,8 @@
       var layout = {
         yaxis: {
           automargin: "width",
-          autorange:'reversed'
+          autorange:'reversed',
+          dtick: 1
         }
       };
       Plotly.newPlot("plot", heatmap_data, layout);
