@@ -248,20 +248,16 @@ class BeetsStatistics:
         try:
             cursor = self.get_db_connection().cursor()
             query = """SELECT
-                        i.YEAR / 10 * 10 as decade,
-                        count(1) AS count
+                        i.YEAR / 10 * 10 as decade
                     FROM
                         items i
-                    GROUP BY
-                        1
-                    ORDER BY
-                        1 ASC;"""
+                    WHERE i.YEAR > 0;
+                    """
             res = cursor.execute(query)
             results = res.fetchall()
             cursor.close()
 
-            count = self._query_one_value("""SELECT count(1) from items i;""")
-            return results, count
+            return results
 
         except sqlite3.Error as e:
             raise DBQueryError from e
@@ -270,21 +266,15 @@ class BeetsStatistics:
         try:
             cursor = self.get_db_connection().cursor()
             query = """SELECT
-                        bitrate / 10000*10000 / 1000 as bitrate,
-                        count(1) AS count
+                        bitrate / 1000 as bitrate
                     FROM
                         items i
-                    GROUP BY
-                        1
-                    ORDER BY
-                        1 desc
                     {}""".format("LIMIT {}".format(limit) if limit > 0 else "")
             res = cursor.execute(query)
             results = res.fetchall()
             cursor.close()
 
-            count = self._query_one_value("""SELECT count(1) from items i;""")
-            return results, count
+            return results
 
         except sqlite3.Error as e:
             raise DBQueryError from e

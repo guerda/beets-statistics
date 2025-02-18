@@ -153,3 +153,7 @@ table.data-table col.progress-bar-col {
   overflow: hidden;
   white-space: nowrap;
 }
+
+div#plot {
+  height: 80vw;
+}

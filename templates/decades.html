@@ -11,32 +11,18 @@
     {% include 'navigation.html' %}
     <content>
       <h2>Genres</h2>
-      <table class="data-table">
-        <colgroup>
-          <col>
-          <col class="progress-bar-col">
-      </colgroup>
-      <tbody>
-        <tr>
-          <th>Decade</th>
-          <th>Number of tracks</th>
-        </tr>
-      {% for decade in decades %}
-
-        <tr>
-          <td>{{decade.decade}}</td>
-          <td>
-            <div class="completeness">
-              <div class="progress-bar" style="width:{{100*decade.count/track_count|round}}%;">
-                {{decade.count}}
-              </div>
-            </div>
-          </td>
-        </tr>
-      {% endfor %}
-      </tbody>
-      </table>
+      <div id="plot"></div>
     </content>
     {% include 'footer.html' %}
+    <script>
+      var decade_data = [{
+        type: 'histogram',
+        y: [{% for decade in decades %}"{{decade.decade}}", {% endfor %}]
+      }];
+      var layout = {
+      
+      };
+      Plotly.newPlot("plot", decade_data, layout);
+    </script>
   </body>
 </html>
