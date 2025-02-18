@@ -118,6 +118,7 @@ navigation a:hover {
   background: var(--card-gradient);
   color: white;
   max-width: 15em;
+  vertical-align: top;
 }
 .insights div:hover {
   box-shadow: 0 10px 18px 0 rgba(0, 0, 0, 0.2);
