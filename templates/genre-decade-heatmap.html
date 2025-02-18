@@ -12,30 +12,12 @@
     <content>
       <h2>Genre Decade Heatmap</h2>
       <div id="plot"></div>
-      {% for genre in genre_list %}"{{genre}}",<br /> {% endfor %}
-      <table>
-        <tr>
-          <th>Genre</th>
-          {% for decade in decades %}
-            <th>{{ decade }}
-          {% endfor %}
-        </tr>
-      {% for genre in heatmap %}
-      <tr>
-        <td>{{ genre }}</td>
-        {% for decade in heatmap[genre]|sort %}
-        <td><div style="background-color: rgba(0,200,50, {{ heatmap[genre][decade] / max_genre_count }}); padding: 0.15em; margin: 0.1em; border-radius: 3px; width: 4em; display:inline;"
-           title="{{decade}} {{heatmap[genre][decade]}} {{genre}};">
-          {{ heatmap[genre][decade] }}</div></td>
-        {% endfor %}
-      </tr>
-      {% endfor %}
-    </table>
     </content>
     {% include 'footer.html' %}
     <script>
       var heatmap_data = [{
         type: 'heatmap',
+        colorscale: 'RdBu',
         x: [{% for decade in decades %}"{{decade}}", {% endfor %}],
         y: [{% for genre in genre_list %}"{{genre}}", {% endfor %}],
         z: [{% for genre in heatmap%}[{% for decade in heatmap[genre] %}{{heatmap[genre][decade]}}, {% endfor %}], {% endfor %}],

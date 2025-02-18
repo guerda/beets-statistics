@@ -8,6 +8,9 @@ from fastapi import Depends
 from typing import Annotated
 from pydantic_settings import BaseSettings
 from fastapi import HTTPException
+import logging
+
+logger = logging.getLogger('uvicorn.error')
 
 
 class InitializationError(Exception):
@@ -160,18 +163,25 @@ async def get_genre_decade_heatmap(
 
     min_decade = 9999
     max_decade = 0
-    max_genre_count = 0
+    
     heatmap = {}
+    genre_list = []
     
     for result in results:
-        min_decade = min(min_decade, result['decade'])
-        max_decade = max(max_decade, result['decade'])
-        max_genre_count = max(max_genre_count, result['count'])
+        decade = result['decade']
+        count = result['count']
+        genre = result['genre']
 
-        if result['genre'] not in heatmap:
-            heatmap[result['genre']] = {}
-        
-        heatmap[result['genre']][result['decade']] = result['count']
+        if genre not in genre_list:
+            genre_list.append(genre)
+
+        min_decade = min(min_decade, decade)
+        max_decade = max(max_decade, decade)
+
+        if genre not in heatmap:
+            heatmap[genre] = {}
+
+        heatmap[genre][decade] = count
 
     # Fill out sparse table
     for genre in heatmap:
@@ -179,12 +189,15 @@ async def get_genre_decade_heatmap(
             if decade not in heatmap[genre]:
                 heatmap[genre][decade] = 0
 
-    print(heatmap)
+    # Sort z values per genre
+    for genre in heatmap:
+        sorted_genre = dict(sorted(heatmap[genre].items()))
+        heatmap[genre] = sorted_genre
 
     return templates.TemplateResponse(
         request=request,
         name="genre-decade-heatmap.html",
-        context={"heatmap": heatmap, "decades": range(min_decade, max_decade+1, 10), "max_genre_count": max_genre_count},
+        context={"heatmap": heatmap, "decades": range(min_decade, max_decade+1, 10), "genre_list": genre_list}
     )
 
 @app.get("/cover/{album_id}", response_class=FileResponse)
