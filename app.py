@@ -134,11 +134,11 @@ async def get_track_decades(
     request: Request,
     beets_statistics: Annotated[BeetsStatistics, Depends(get_beets_statistics)],
 ):
-    decades, count = beets_statistics.get_track_decades()
+    decades = beets_statistics.get_track_decades()
     return templates.TemplateResponse(
         request=request,
         name="decades.html",
-        context={"decades": decades, "track_count": count},
+        context={"decades": decades},
     )
 
 
@@ -147,11 +147,11 @@ async def get_track_quality(
     request: Request,
     beets_statistics: Annotated[BeetsStatistics, Depends(get_beets_statistics)],
 ):
-    bitrates, count = beets_statistics.get_track_quality(limit=20)
+    bitrates = beets_statistics.get_track_quality()
     return templates.TemplateResponse(
         request=request,
         name="quality.html",
-        context={"bitrates": bitrates, "track_count": count},
+        context={"bitrates": bitrates},
     )
 
 @app.get("/genre-decade-heatmap", response_class=HTMLResponse)

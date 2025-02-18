@@ -18,13 +18,13 @@
       var quality_data = [{
         type: 'histogram',
         histfunc: 'count',
-        y: {{quality_list}},
+        y: [{%for bitrate in bitrates %}{{bitrate.bitrate}}, {% endfor %}],
         nbinsy: 100
       }];
       var layout = {
         yaxis:{
           autorange:'reversed',
-          automargin: 'width'
+          automargin: 'width',
         }
       };
       Plotly.newPlot("plot", quality_data, layout);

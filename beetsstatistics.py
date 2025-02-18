@@ -262,14 +262,13 @@ class BeetsStatistics:
         except sqlite3.Error as e:
             raise DBQueryError from e
 
-    def get_track_quality(self, limit: int = 0):
+    def get_track_quality(self):
         try:
             cursor = self.get_db_connection().cursor()
             query = """SELECT
                         bitrate / 1000 as bitrate
                     FROM
-                        items i
-                    {}""".format("LIMIT {}".format(limit) if limit > 0 else "")
+                        items i"""
             res = cursor.execute(query)
             results = res.fetchall()
             cursor.close()
