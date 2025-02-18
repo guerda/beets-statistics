@@ -19,6 +19,6 @@ jobs:
     - name: Login to GHCR.io
       run: docker login --username guerda --password ${{ secrets.PAT }} ghcr.io
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag ghcr.io/guerda/guerda/beets-statistics:${{ github.event.inputs.image_version }}
+      run: docker build . --file Dockerfile --tag ghcr.io/guerda/guerda/beets-statistics:${{ github.event.inputs.image_version }} --tag ghcr.io/guerda/guerda/beets-statistics:latest
     - name: Push to ghcr.io
       run: docker push ghcr.io/guerda/guerda/beets-statistics:${{ github.event.inputs.image_version }}
