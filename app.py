@@ -204,7 +204,7 @@ async def get_genre_decade_heatmap(
 async def get_album_cover(album_id: str, beets_statistics: Annotated[BeetsStatistics, Depends(get_beets_statistics)]):
     album_cover_path = beets_statistics.get_album_cover_path(album_id)
     if album_cover_path is None:
-        album_cover_path = "static/blank.jpg"
+        album_cover_path = "static/blank.png"
     return album_cover_path
 
 @app.get("/added-timeline", response_class=HTMLResponse)
