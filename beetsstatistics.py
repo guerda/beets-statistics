@@ -301,9 +301,11 @@ class BeetsStatistics:
     def get_album_cover_path(self, album_id: int):
         query = """select artpath from albums where id = {}""".format(album_id)
         path = self._query_one_value(query)
-        print(query)
-        print("{} -> {}".format(album_id, path))
-        return path
+        
+        if path and os.path.isfile(path):
+            return path
+        else:
+            return None
 
     def get_added_timeline(self):
         try:
