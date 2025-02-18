@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Timeline of added tracks - Beets Statistics</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="{{ url_for('static', path='main.css') }}" />
+  </head>
+  <body>
+    {% include 'navigation.html' %}
+    <content>
+      <h2>Timeline of added tracks</h2>
+      <div id="plot"></div>
+    </content>
+    {% include 'footer.html' %}
+    <script>
+      var timeline_data = [{
+        type: 'histogram',
+        cumulative: { 'enabled': true },
+        x: [{% for timepoint in timeline %}"{{timepoint.added}}", {% endfor %}],
+      }];
+      Plotly.newPlot("plot", timeline_data);
+    </script>
+  </body>
+</html>
