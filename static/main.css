@@ -40,6 +40,16 @@ content.album-cards {
   gap: 0.7em;
 }
 
+div.duplicate-row {
+  display: grid;
+  
+}
+
+div.duplicate-row div {
+  display: inline;
+  max-width: 217px;
+}
+
 #footer {
   padding-top: 3em;
   font-size: 10pt;

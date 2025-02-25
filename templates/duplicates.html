@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Duplicate Tracks - Beets Statistics</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="{{ url_for('static', path='main.css') }}" />
+  </head>
+  <body>
+    {% include 'navigation.html' %}
+    <content>
+      <h2>Duplicate Tracks</h2>
+
+      <p>Beets identified {{ duplicates | length }} duplicates in your music collection.</p>
+
+      {% for duplicate_row in duplicates %}
+      <div style="overflow-y: scroll; width:90vw;">
+        <table>
+          <tr style="vertical-align: top;">
+        {% for entry in duplicate_row %}
+          <td>
+            <ul>
+            <li>{{ entry.artist }}</li>
+            <li>{{ entry.title }}</li>
+            <li>{{ entry.album }}</li>
+            <li><span style="padding: 0.25em; margin: 0.1em; background-color: hsla(150, 50%, 60%, {{ ( entry.bitrate - 80) / 200 }} );">{{ entry.bitrate }} kbps</span></li>
+            <li>{{ entry.filename }}</li>
+            <li>{{ entry.trackid }}</li>
+            </ul>
+          </td>
+        {% endfor %}
+        </tr>
+        </table>
+      </div>
+      {% endfor %}
+
+
+
+    </content>
+    {% include 'footer.html' %}
+</body>
+</html>
