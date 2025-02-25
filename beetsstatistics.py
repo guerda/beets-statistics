@@ -237,9 +237,6 @@ class BeetsStatistics:
             results = res.fetchall()
             cursor.close()
             lossless, lossy, unknown = self.map_file_format_to_lossy(results)
-            print(
-                "Lossless: {}, lossy: {}, unknown: {}".format(lossless, lossy, unknown)
-            )
             return results, lossless, lossy, unknown
         except sqlite3.Error as e:
             raise DBQueryError from e
@@ -317,6 +314,57 @@ class BeetsStatistics:
             return results
         except sqlite3.Error as e:
             raise DBQueryError from e
+
+    def get_duplicates(self):
+        try:
+            cursor = self.get_db_connection().cursor()
+            query = """SELECT
+                          i2.mb_trackid, i2.title, i2.artist, i2.bitrate/1000 as bitrate, i2.album, i2.path
+                       FROM items i2 where i2.mb_trackid in (select i1.mb_trackid from items i1
+                        WHERE i1.mb_trackid <> ''
+                        GROUP BY i1.mb_trackid
+                       HAVING COUNT(*) > 1 )
+                       ORDER BY i2.mb_trackid ASC;"""
+            cursor.execute(query)
+            results = cursor.fetchall()
+            
+            cursor.close()
+            duplicates = []
+            last_trackid = None
+            duplicate_row = []
+
+            for row in results:
+                trackid = row["mb_trackid"]                        
+                title = row["title"]
+                artist = row["artist"]
+                bitrate = row["bitrate"]
+                album = row["album"]
+                filename = row["path"]
+                
+
+                if trackid != last_trackid:
+                    last_trackid = trackid
+                    if len(duplicate_row) > 0:
+                        duplicates.append(duplicate_row)
+                        duplicate_row = []
+
+                duplicate_entry = {
+                    "trackid": trackid,
+                    "artist": artist,
+                    "title": title,
+                    "album": album,
+                    "bitrate": bitrate,
+                    "filename": filename.decode('UTF-8')
+                }
+                duplicate_row.append(duplicate_entry)
+
+            if len(duplicate_row) > 0:
+                duplicates.append(duplicate_row) 
+
+            return duplicates
+        except sqlite3.Error as e:
+            raise DBQueryError from e
+        
 
 
 if __name__ == "__main__":

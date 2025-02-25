@@ -215,3 +215,13 @@ async def get_added_timeline(request: Request, beets_statistics: Annotated[Beets
         name="added-timeline.html",
         context={"timeline": timeline},
     )
+
+@app.get("/duplicates", response_class=HTMLResponse)
+async def get_duplicates(request: Request, beets_statistics: Annotated[BeetsStatistics, Depends(get_beets_statistics)]):
+    duplicates = beets_statistics.get_duplicates()
+
+    return templates.TemplateResponse(
+        request=request,
+        name="duplicates.html",
+        context={"duplicates": duplicates}
+    )
