@@ -9,8 +9,9 @@ from typing import Annotated
 from pydantic_settings import BaseSettings
 from fastapi import HTTPException
 import logging
+from urllib.parse import quote_plus
 
-logger = logging.getLogger('uvicorn.error')
+logger = logging.getLogger("uvicorn.error")
 
 
 class InitializationError(Exception):
@@ -44,8 +45,9 @@ async def get_beets_statistics():
 settings = Settings()
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
-templates = Jinja2Templates(directory="templates")
 
+templates = Jinja2Templates(directory="templates")
+templates.env.filters['quote_plus'] = lambda u: quote_plus(u)
 
 @app.get("/", response_class=HTMLResponse)
 async def get_general_stats(
@@ -106,7 +108,9 @@ async def get_genre_count(
         genre_list.append(genre["genre"])
         count_list.append(genre["count"])
     return templates.TemplateResponse(
-        request=request, name="genres.html", context={"genres": genres, "genre_list": genre_list, "count_list": count_list}
+        request=request,
+        name="genres.html",
+        context={"genres": genres, "genre_list": genre_list, "count_list": count_list},
     )
 
 
@@ -125,7 +129,12 @@ async def get_artist_stats(
     return templates.TemplateResponse(
         request=request,
         name="artists.html",
-        context={"artists": artists, "track_count": count, "artist_list": artist_list, "count_list": count_list},
+        context={
+            "artists": artists,
+            "track_count": count,
+            "artist_list": artist_list,
+            "count_list": count_list,
+        },
     )
 
 
@@ -154,23 +163,24 @@ async def get_track_quality(
         context={"bitrates": bitrates},
     )
 
+
 @app.get("/genre-decade-heatmap", response_class=HTMLResponse)
 async def get_genre_decade_heatmap(
     request: Request,
-    beets_statistics: Annotated[BeetsStatistics, Depends(get_beets_statistics)]
+    beets_statistics: Annotated[BeetsStatistics, Depends(get_beets_statistics)],
 ):
     results = beets_statistics.get_genre_decade_heatmap()
 
     min_decade = 9999
     max_decade = 0
-    
+
     heatmap = {}
     genre_list = []
-    
+
     for result in results:
-        decade = result['decade']
-        count = result['count']
-        genre = result['genre']
+        decade = result["decade"]
+        count = result["count"]
+        genre = result["genre"]
 
         if genre not in genre_list:
             genre_list.append(genre)
@@ -185,7 +195,7 @@ async def get_genre_decade_heatmap(
 
     # Fill out sparse table
     for genre in heatmap:
-        for decade in range(min_decade, max_decade+1, 10):
+        for decade in range(min_decade, max_decade + 1, 10):
             if decade not in heatmap[genre]:
                 heatmap[genre][decade] = 0
 
@@ -197,31 +207,60 @@ async def get_genre_decade_heatmap(
     return templates.TemplateResponse(
         request=request,
         name="genre-decade-heatmap.html",
-        context={"heatmap": heatmap, "decades": range(min_decade, max_decade+1, 10), "genre_list": genre_list}
+        context={
+            "heatmap": heatmap,
+            "decades": range(min_decade, max_decade + 1, 10),
+            "genre_list": genre_list,
+        },
     )
 
+
 @app.get("/cover/{album_id}", response_class=FileResponse)
-async def get_album_cover(album_id: str, beets_statistics: Annotated[BeetsStatistics, Depends(get_beets_statistics)]):
+async def get_album_cover(
+    album_id: str,
+    beets_statistics: Annotated[BeetsStatistics, Depends(get_beets_statistics)],
+):
     album_cover_path = beets_statistics.get_album_cover_path(album_id)
     if album_cover_path is None:
         album_cover_path = "static/blank.png"
     return album_cover_path
 
+
 @app.get("/added-timeline", response_class=HTMLResponse)
-async def get_added_timeline(request: Request, beets_statistics: Annotated[BeetsStatistics, Depends(get_beets_statistics)]):
+async def get_added_timeline(
+    request: Request,
+    beets_statistics: Annotated[BeetsStatistics, Depends(get_beets_statistics)],
+):
     timeline = beets_statistics.get_added_timeline()
     return templates.TemplateResponse(
-        request = request,
+        request=request,
         name="added-timeline.html",
         context={"timeline": timeline},
     )
 
+
 @app.get("/duplicates", response_class=HTMLResponse)
-async def get_duplicates(request: Request, beets_statistics: Annotated[BeetsStatistics, Depends(get_beets_statistics)]):
+async def get_duplicates(
+    request: Request,
+    beets_statistics: Annotated[BeetsStatistics, Depends(get_beets_statistics)],
+):
     duplicates = beets_statistics.get_duplicates()
 
     return templates.TemplateResponse(
+        request=request, name="duplicates.html", context={"duplicates": duplicates}
+    )
+
+
+@app.get("/not-in-mb", response_class=HTMLResponse)
+async def get_not_in_mb(
+    request: Request,
+    beets_statistics: Annotated[BeetsStatistics, Depends(get_beets_statistics)],
+):
+    items_not_in_mb = beets_statistics.get_items_not_in_mb()
+    albums_not_in_mb = beets_statistics.get_albums_not_in_mb()
+
+    return templates.TemplateResponse(
         request=request,
-        name="duplicates.html",
-        context={"duplicates": duplicates}
+        name="not-in-mb.html",
+        context={"tracks": items_not_in_mb, "albums": albums_not_in_mb},
     )

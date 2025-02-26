@@ -108,6 +108,7 @@ class BeetsStatistics:
 
         """ By album
         """
+
     def get_genre_count(self, limit: int = 0):
         try:
             cursor = self.get_db_connection().cursor()
@@ -294,11 +295,10 @@ class BeetsStatistics:
         except sqlite3.Error as e:
             raise DBQueryError from e
 
-
     def get_album_cover_path(self, album_id: int):
         query = """select artpath from albums where id = {}""".format(album_id)
         path = self._query_one_value(query)
-        
+
         if path and os.path.isfile(path):
             return path
         else:
@@ -327,20 +327,19 @@ class BeetsStatistics:
                        ORDER BY i2.mb_trackid ASC;"""
             cursor.execute(query)
             results = cursor.fetchall()
-            
+
             cursor.close()
             duplicates = []
             last_trackid = None
             duplicate_row = []
 
             for row in results:
-                trackid = row["mb_trackid"]                        
+                trackid = row["mb_trackid"]
                 title = row["title"]
                 artist = row["artist"]
                 bitrate = row["bitrate"]
                 album = row["album"]
                 filename = row["path"]
-                
 
                 if trackid != last_trackid:
                     last_trackid = trackid
@@ -354,17 +353,51 @@ class BeetsStatistics:
                     "title": title,
                     "album": album,
                     "bitrate": bitrate,
-                    "filename": filename.decode('UTF-8')
+                    "filename": filename.decode("UTF-8"),
                 }
                 duplicate_row.append(duplicate_entry)
 
             if len(duplicate_row) > 0:
-                duplicates.append(duplicate_row) 
+                duplicates.append(duplicate_row)
 
             return duplicates
         except sqlite3.Error as e:
             raise DBQueryError from e
-        
+
+    def get_items_not_in_mb(self):
+        try:
+            cursor = self.get_db_connection().cursor()
+            query = """SELECT
+                          i.title,
+                          i.artist,
+                          i.album
+                       FROM
+                          items i
+                       WHERE i.mb_trackid = '';"""
+            cursor.execute(query)
+            results = cursor.fetchall()
+
+            cursor.close()
+            return results
+        except sqlite3.Error as e:
+            raise DBQueryError from e
+
+    def get_albums_not_in_mb(self):
+        try:
+            cursor = self.get_db_connection().cursor()
+            query = """SELECT
+                          a.album,
+                          a.albumartist
+                       FROM
+                          albums a
+                       WHERE a.mb_albumid = '';"""
+            cursor.execute(query)
+            results = cursor.fetchall()
+
+            cursor.close()
+            return results
+        except sqlite3.Error as e:
+            raise DBQueryError from e
 
 
 if __name__ == "__main__":
@@ -382,5 +415,3 @@ if __name__ == "__main__":
         print("{} - {}".format(artist["track_count"], artist["artist"]))
 
     bs.close()
-
-

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Not in MusicBrainz - Beets Statistics</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="{{ url_for('static', path='main.css') }}" />
+  </head>
+  <body>
+    {% include 'navigation.html' %}
+    <content>
+      <h2>Not in MusicBrainz</h2>
+
+      <p>You have {{ albums | length }} albums and {{ tracks | length }} tracks in your collection which are not yet in MusicBrainz.</p>
+
+      <h3>Albums not in MusicBrainz</h3>
+      <ul>
+      {% for album in albums %}
+      <li>
+        <i>{{ album.album}}</i> by {{ album.albumartist}} 
+        <form action="https://musicbrainz.org/search" method="get" target="blank">
+          <input type="hidden" name="query" value="artist:({{ album.albumartist | quote_plus }}) release:({{album.album | quote_plus }})" />
+          <input type="hidden" name="advanced" value="1" />
+          <input type="hidden" name="type" value="release" />
+          <button type="submit">Search in MusicBrainz</button>
+        </form>
+      </li>
+      {% endfor %}
+    </ul>
+
+      <h3>Tracks not in MusicBrainz</h3>
+      <ul>
+      {% for track in tracks %}
+      <li>
+        <i>{{ track.title}}</i> by {{ track.artist}} <br />on {{ track.album }}
+        <form action="https://musicbrainz.org/search" method="get" target="blank">
+          <input type="hidden" name="query" value="artist:({{ track.artist | quote_plus }}) track:({{track.title| quote_plus }})" />
+          <input type="hidden" name="advanced" value="1" />
+          <input type="hidden" name="type" value="recording" />
+          <button type="submit">Search in MusicBrainz</button>
+        </form>
+      </li>
+      {% endfor %}
+      </ul>
+
+
+    </content>
+    {% include 'footer.html' %}
+</body>
+</html>
