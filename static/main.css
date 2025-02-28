@@ -154,15 +154,36 @@ table.data-table col.progress-bar-col {
 }
 
 .album-genre {
-  padding: 0.3em;
+  padding-top: 0.3em;
   font-style: italic;
 }
 
 .album-title {
+  margin-bottom: 0.2em;
   margin-top: 0.3em;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+}
+
+.album-year {
+  margin-top: 0.3em;
+  margin-bottom: 0.3em;
+}
+
+.album-mb-link {
+  font-size: 10pt; 
+}
+
+.album-barcode {
+  font-size:9pt;
+  font-family: monospace;
+}
+
+.album-artist {
+  max-height: 2em;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 div#plot {

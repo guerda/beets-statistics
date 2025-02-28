@@ -93,6 +93,7 @@ class BeetsStatistics:
         for album in albums:
             return_album = Album()
             return_album.id = album["album_id"]
+            return_album.mb_albumid = album["mb_albumid"]
             return_album.title = album["album"]
             return_album.tracks = album["tracks"]
             return_album.track_total = album["tracktotal"]
@@ -101,6 +102,7 @@ class BeetsStatistics:
             return_album.genre = album["genre"]
             return_album.year = album["year"]
             return_album.original_year = album["original_year"]
+            return_album.barcode = album["barcode"]
             # id |artpath|added |albumartist |albumartist_sort|albumartist_credit|albumartists|albumartists_sort |albumartists_credit|album |genre |style|discogs_albumid|discogs_artistid|discogs_labelid|year|month|day|disctotal|comp|mb_albumid|mb_albumartistid|albumtype|albumtypes|label |barcode |mb_releasegroupid |release_group_title |asin|catalognum|script|language|country|albumstatus|albumdisambig|releasegroupdisambig|rg_album_gain|rg_album_peak|r128_album_gain|original_year|original_month|original_day|
 
             result.append(return_album)
