@@ -20,7 +20,9 @@
         cumulative: { 'enabled': true },
         x: [{% for timepoint in timeline %}"{{timepoint.added}}", {% endfor %}],
       }];
-      Plotly.newPlot("plot", timeline_data);
+      layout = {};
+      config = { responsive: true };
+      Plotly.newPlot("plot", timeline_data, layout, config);
     </script>
   </body>
 </html>

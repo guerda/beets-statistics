@@ -28,9 +28,11 @@
           automargin: "width",
           autorange:'reversed',
           dtick: 1
-        }
+        },
+        layout: 800
       };
-      Plotly.newPlot("plot", heatmap_data, layout);
+      config = { responsive: true };
+      Plotly.newPlot("plot", heatmap_data, layout, config);
     </script>
 
 

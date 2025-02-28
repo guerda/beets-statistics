@@ -25,9 +25,11 @@
         yaxis:{
           autorange:'reversed',
           automargin: 'width',
-        }
+        },
+        height: 700
       };
-      Plotly.newPlot("plot", quality_data, layout);
+      config = { responsive: true };
+      Plotly.newPlot("plot", quality_data, layout, config);
     </script>
 
   </body>

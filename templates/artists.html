@@ -25,10 +25,12 @@
         yaxis:{
           autorange:'reversed',
           automargin: 'width',
-	  dtick: 1
-        }
+      	  dtick: 1
+        },
+        height: 700
       };
-      Plotly.newPlot("plot", artist_data, layout);
+      config = { responsive: true };
+      Plotly.newPlot("plot", artist_data, layout, config);
     </script>
 
   </body>

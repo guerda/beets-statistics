@@ -22,13 +22,14 @@
         x: {{count_list}}
       }];
       var layout = {
-    yaxis:{
-        autorange:'reversed',
-        automargin: 'width',
-	      dtick: 1
-    }
-};
-      Plotly.newPlot("plot", genre_data, layout);
+          yaxis:{
+              autorange:'reversed',
+              automargin: 'width',
+              dtick: 1
+          }
+      };
+      config = { responsive: true };
+      Plotly.newPlot("plot", genre_data, layout, config);
     </script>
 
   </body>
