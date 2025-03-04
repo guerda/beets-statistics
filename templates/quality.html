@@ -12,6 +12,7 @@
     <content>
       <h2>Quality per track</h2>
       <div id="plot"></div>
+      <div id="boxplot"></div>
     </content>
     {% include 'footer.html' %}
     <script>
@@ -30,6 +31,13 @@
       };
       config = { responsive: true };
       Plotly.newPlot("plot", quality_data, layout, config);
+
+      var quality_data_box = {
+        name: 'Quality',
+        x: [{%for bitrate in bitrates %}{{bitrate.bitrate}}, {% endfor %}],
+        type: 'box',
+      };
+      Plotly.newPlot("boxplot", [quality_data_box]);
     </script>
 
   </body>
