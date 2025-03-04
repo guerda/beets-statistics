@@ -1,6 +1,48 @@
 * {
   font-family: sans-serif;
 }
+
+@media only screen and (min-width: 600px) {
+navigation li {
+  display: inline;
+  padding: 0.7 em;
+  padding-right: 0.7em;
+}
+navigation a {
+  padding: 0.7em;
+  background: var(--nav-gradient);
+  border-radius: 5px;
+  color: white;
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 0.15em;
+}
+
+navigation a:hover {
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2);
+}
+}
+
+@media only screen and (max-width: 600px) {
+  navigation ul { 
+    padding: 0px; 
+    background-color: var(--raspberry-rose);
+  }
+
+  navigation li {
+    display: inline;
+    padding: 0.2 em;
+    padding-right: 0.1em;
+  }
+  
+  navigation a {
+    padding: 0.2em;
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+  }
+}
+
 .album {
   min-width: 200px;
   max-width: 217px;
@@ -95,25 +137,6 @@ div.duplicate-row div {
     var(--buff) 0%,
     var(--raspberry-rose) 100%
   );
-}
-
-navigation li {
-  display: inline;
-  padding: 0.7 em;
-  padding-right: 0.7em;
-}
-navigation a {
-  padding: 0.7em;
-  background: var(--nav-gradient);
-  border-radius: 5px;
-  color: white;
-  text-decoration: none;
-  display: inline-block;
-  margin-top: 0.15em;
-}
-
-navigation a:hover {
-  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2);
 }
 
 .insights div {
