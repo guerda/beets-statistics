@@ -8,3 +8,11 @@ updates:
     ignore:
       - dependency-name: "*"
         update-types: ["version-update:semver-patch"]
+  - package-ecosystem: "docker
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    assignees: ["guerda"]
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-patch"]
