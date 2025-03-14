@@ -27,7 +27,13 @@
           autorange:'reversed',
           automargin: 'width',
         },
-        height: 700
+        height: 700,
+        margin: {
+          l: 45,
+          r: 10,
+          b: 20,
+          t: 0,
+        }
       };
       config = { responsive: true };
       Plotly.newPlot("plot", quality_data, layout, config);

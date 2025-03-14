@@ -20,7 +20,12 @@
         y: [{% for decade in decades %}"{{decade.decade}}", {% endfor %}]
       }];
       var layout = {
-      
+        margin: {
+          l: 45,
+          r: 10,
+          b: 20,
+          t: 0,
+        }
       };
       config = { responsive: true };
       Plotly.newPlot("plot", decade_data, layout, config);

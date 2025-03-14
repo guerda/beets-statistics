@@ -29,7 +29,13 @@
           autorange:'reversed',
           dtick: 1
         },
-        layout: 800
+        layout: 800,
+        margin: {
+          l: 45,
+          r: 10,
+          b: 20,
+          t: 0,
+        }
       };
       config = { responsive: true };
       Plotly.newPlot("plot", heatmap_data, layout, config);
