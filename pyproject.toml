@@ -1,4 +1,30 @@
+[project]
+name = ""
+version = "0.0.1"
+requires-python = "~=3.11"
+dependencies = [
+    "fastapi[standard]",
+    "pyyaml",
+    "jinja2",
+    "humanize",
+    "pydantic",
+    "pydantic-settings",
+]
+
 [tool.pytest.ini_options]
 pythonpath = [
   "."
 ]
+
+[dependency-groups]
+dev = [
+    "ruff",
+    "pytest",
+]
+
+[tool.uv]
+package = false
+
+[[tool.uv.index]]
+name = "pypi"
+url = "https://pypi.org/simple"
