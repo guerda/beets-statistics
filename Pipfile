@@ -4,12 +4,12 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-fastapi = {extras = ["standard"], version = "*"}
 pyyaml = "*"
 jinja2 = "*"
 humanize = "*"
 pydantic = "*"
 pydantic-settings = "*"
+fastapi = "*"
 
 [dev-packages]
 ruff = "*"

@@ -1,11 +1,11 @@
-from fastapi import FastAPI, Request
+from fastapi import Cookie, FastAPI, Form, Request, Response
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, HTMLResponse
 from beetsstatistics import AlbumSort, BeetsStatistics, DBNotFoundError, DBQueryError
 import humanize
 from fastapi import Depends
-from typing import Annotated
+from typing import Annotated, Union
 from pydantic_settings import BaseSettings
 from fastapi import HTTPException
 import logging
@@ -89,10 +89,11 @@ async def get_album_stats(
     request: Request,
     beets_statistics: Annotated[BeetsStatistics, Depends(get_beets_statistics)],
     sort_by: AlbumSort = AlbumSort.ARTIST,
-):
+    player_url: Annotated[Union[str, None], Cookie()] = None,
+    ):
     albums = beets_statistics.get_albums_from_db(sort_by=sort_by)
     return templates.TemplateResponse(
-        request=request, name="albums.html", context={"albums": albums}
+        request=request, name="albums.html", context={"albums": albums, "player_url": player_url}
     )
 
 
@@ -264,3 +265,8 @@ async def get_not_in_mb(
         name="not-in-mb.html",
         context={"tracks": items_not_in_mb, "albums": albums_not_in_mb},
     )
+
+@app.post("/configuration")
+def set_configuration(response: Response, player_url: Annotated[str, Form()] = None):
+    response.set_cookie("player_url", player_url)
+    return player_url

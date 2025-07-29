@@ -24,6 +24,7 @@
               <div class="album-artist" title="{{album.album_artist if album.album_artist else "n/a"}}">{{album.album_artist if album.album_artist else "n/a"}}</div>
               <div class="album-genre">{{album.genre if album.genre else "n/a"}}</div>
               <div class="album-barcode">{% if album.barcode %}{{album.barcode}}{% endif %}&nbsp;</div>
+              <div class="album-player-link">{{player_url}}<a href="https://navidrome.local.guerda.de/app/#/album/all?displayedFilters=%7B%7D&filter=%7B%22name%22%3A%22{{album.title | quote_plus}}%22,%22artist%22%3A%22{{album.album_artist | quote_plus}}%22%7D&order=ASC&page=1&perPage=12&sort=name">Play</a></div>
               <div class="completeness">
               {% if album.complete_percentage > 100 %}
                 <div class="progress-bar invalid">
