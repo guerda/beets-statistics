@@ -1,9 +1,10 @@
-import sqlite3
-import yaml
-import os
 import argparse
+import os
 import os.path
+import sqlite3
 from enum import Enum
+
+import yaml
 
 LOSSY_FORMATS = ["mp3", "aac", "ogg"]
 LOSSLESS_FORMATS = ["flac", "wav"]
