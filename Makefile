@@ -10,6 +10,11 @@ fmt:
 test:
 	pytest
 
+dev:
+	fastapi dev app.py --host 0.0.0.0
+
+prod:
+	fastapi run app.py
 
 changelog:
 	git-cliff -O CHANGELOG.md
