@@ -47,7 +47,8 @@ app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 templates = Jinja2Templates(directory="templates")
-templates.env.filters['quote_plus'] = lambda u: quote_plus(u)
+templates.env.filters["quote_plus"] = lambda u: quote_plus(u)
+
 
 @app.get("/", response_class=HTMLResponse)
 async def get_general_stats(
