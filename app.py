@@ -83,7 +83,7 @@ async def get_general_stats(
             "lossless": lossless,
             "lossy": lossy,
             "unknown": unknown,
-            "recently_added_albums": recently_added_albums
+            "recently_added_albums": recently_added_albums,
         },
     )
 

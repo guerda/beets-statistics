@@ -401,7 +401,7 @@ class BeetsStatistics:
             return results
         except sqlite3.Error as e:
             raise DBQueryError from e
-        
+
     def get_recently_added_albums(self):
         try:
             cursor = self.get_db_connection().cursor()
