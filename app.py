@@ -64,6 +64,8 @@ async def get_general_stats(
         file_size_str = humanize.naturalsize(beets_statistics.get_file_size())
         avg_bpm = beets_statistics.get_avg_bpm()
         format_count, lossless, lossy, unknown = beets_statistics.get_track_formats()
+
+        recently_added_albums = beets_statistics.get_recently_added_albums()
     except (DBQueryError, DBNotFoundError) as e:
         raise HTTPException(
             status_code=500, detail="Could not query general statistics: {}".format(e)
@@ -81,6 +83,7 @@ async def get_general_stats(
             "lossless": lossless,
             "lossy": lossy,
             "unknown": unknown,
+            "recently_added_albums": recently_added_albums
         },
     )
 
