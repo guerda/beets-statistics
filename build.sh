@@ -1,1 +1,1 @@
-docker build -t "guerda/beets-statistics:1.0.1" . 
+docker build -t "guerda/beets-statistics:1.0.2" . 
