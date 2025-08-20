@@ -1,15 +1,15 @@
-from fastapi import FastAPI, Request
-from fastapi.templating import Jinja2Templates
-from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse, HTMLResponse
-from beetsstatistics import AlbumSort, BeetsStatistics, DBNotFoundError, DBQueryError
-import humanize
-from fastapi import Depends
-from typing import Annotated
-from pydantic_settings import BaseSettings
-from fastapi import HTTPException
 import logging
+from typing import Annotated
 from urllib.parse import quote_plus
+
+import humanize
+from fastapi import Depends, FastAPI, HTTPException, Request
+from fastapi.responses import FileResponse, HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+from pydantic_settings import BaseSettings
+
+from beetsstatistics import AlbumSort, BeetsStatistics, DBNotFoundError, DBQueryError
 
 logger = logging.getLogger("uvicorn.error")
 
