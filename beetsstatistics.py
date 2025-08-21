@@ -408,7 +408,12 @@ class BeetsStatistics:
             query = """select
                             a.id,
                             a.album,
-                            a.albumartist
+                            a.albumartist,
+                            a.mb_albumid,
+                            a.mb_year,
+                            a.genre,
+                            
+                        
                         from albums a order by a.added desc 
                         limit 10;"""
             cursor.execute(query)
