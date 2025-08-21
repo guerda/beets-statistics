@@ -1,3 +1,4 @@
+{% import "macros.tmpl" as macros -%}
 <!DOCTYPE html>
 <html>
   <head>
@@ -20,14 +21,16 @@
       </div>
       
       <h3>Recently added albums</h3>
-      {% for album in albums %}
-        {{ album.album }} {{ album.albumartist }} <br>
-      {% endfor %}
-
+      <div class="album-cards">
+        {% for album in recently_added_albums %}
+          {{ macros.album_tile(album.id, album.title, album.mb_albumid, album.year, album.albumartist, album.genre)}}
+        {% endfor %}
+      </div>
       <h3>File formats</h3>
       <div id="plot"></div>
 
     </content>
+    
     {% include 'footer.html' %}
     <script>
       var format_data = [{
