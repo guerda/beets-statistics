@@ -402,6 +402,23 @@ class BeetsStatistics:
         except sqlite3.Error as e:
             raise DBQueryError from e
 
+    def get_recently_added_albums(self):
+        try:
+            cursor = self.get_db_connection().cursor()
+            query = """select
+                            a.id,
+                            a.album,
+                            a.albumartist
+                        from albums a order by a.added desc 
+                        limit 10;"""
+            cursor.execute(query)
+            results = cursor.fetchall()
+
+            cursor.close()
+            return results
+        except sqlite3.Error as e:
+            raise DBQueryError from e
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(prog="beets-statistics")
