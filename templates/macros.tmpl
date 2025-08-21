@@ -1,0 +1,27 @@
+{% macro album_tile(id, title, mb_albumid, year, album_artist, genre, barcode, complete_percentage) -%}
+    <div class="album">
+        <div class="container">
+            <div class="album-cover"><img src="/cover/{{id}}" width="200" height="200" loading="lazy" /></div>
+            <h4 class="album-title" title="{{title if title else "n/a"}}">{{title if title else "n/a"}}</h4>
+            <div class="album-mb-link">{% if mb_albumid %}<a href="https://musicbrainz.org/release/{{mb_albumid}}">On MusicBrainz</a>{% endif %}&nbsp;</div>
+            <h5 class="album-year">{{year if year else "n/a"}}</h5>
+            <div class="album-artist" title="{{album_artist if album_artist else "n/a"}}">{{album_artist if album_artist else "n/a"}}</div>
+            <div class="album-genre">{{genre if genre else "n/a"}}</div>
+            <div class="album-barcode">{% if barcode %}{{barcode}}{% endif %}&nbsp;</div>
+            {% if complete_percentage %}
+            <div class="completeness">
+            {% if complete_percentage > 100 %}
+            <div class="progress-bar invalid">
+            {% else %}
+            <div
+                style="width: {{complete_percentage|round}}%;"
+                class="progress-bar"
+            >
+            {% endif %}
+            {{complete_percentage|round}}%
+            </div>
+                    </div>
+            {% endif %}
+        </div>
+    </div>
+{%- endmacro %}
