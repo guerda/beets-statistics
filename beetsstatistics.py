@@ -410,10 +410,8 @@ class BeetsStatistics:
                             a.album,
                             a.albumartist,
                             a.mb_albumid,
-                            a.mb_year,
-                            a.genre,
-                            
-                        
+                            a.year,
+                            a.genre
                         from albums a order by a.added desc 
                         limit 10;"""
             cursor.execute(query)

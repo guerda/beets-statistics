@@ -73,7 +73,13 @@ async def get_general_stats(
         format_count, lossless, lossy, unknown = beets_statistics.get_track_formats()
 
         recently_added_albums = beets_statistics.get_recently_added_albums()
-    except (DBQueryError, DBNotFoundError) as e:
+    except DBNotFoundError as e:
+        logger.error("Could not find database", exc_info=e)
+        raise HTTPException(
+            status_code=500, detail="Could not find database: {}".format(e)
+        )
+    except DBQueryError as e:
+        logger.error("Could not query general statistics", exc_info=e)
         raise HTTPException(
             status_code=500, detail="Could not query general statistics: {}".format(e)
         )
