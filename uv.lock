@@ -10,6 +10,7 @@ dependencies = [
     { name = "fastapi", extra = ["standard"] },
     { name = "humanize" },
     { name = "jinja2" },
+    { name = "logfmter" },
     { name = "pydantic" },
     { name = "pydantic-settings" },
     { name = "pyyaml" },
@@ -26,6 +27,7 @@ requires-dist = [
     { name = "fastapi", extras = ["standard"] },
     { name = "humanize" },
     { name = "jinja2" },
+    { name = "logfmter", specifier = ">=0.0.10" },
     { name = "pydantic" },
     { name = "pydantic-settings" },
     { name = "pyyaml" },
@@ -262,6 +264,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/df/bf/f7da0350254c0ed7c72f3e33cef02e048281fec7ecec5f032d4aac52226b/jinja2-3.1.6.tar.gz", hash = "sha256:0137fb05990d35f1275a587e9aee6d56da821fc83491a0fb838183be43f66d6d", size = 245115, upload-time = "2025-03-05T20:05:02.478Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/62/a1/3d680cbfd5f4b8f15abc1d571870c5fc3e594bb582bc3b64ea099db13e56/jinja2-3.1.6-py3-none-any.whl", hash = "sha256:85ece4451f492d0c13c5dd7c13a64681a86afae63a5f347908daf103ce6d2f67", size = 134899, upload-time = "2025-03-05T20:05:00.369Z" },
+]
+
+[[package]]
+name = "logfmter"
+version = "0.0.10"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/cd/32/8cef33e50f2181ea90b77bc504db382c8ae3e9c08c07ec4bea4e631f49b3/logfmter-0.0.10.tar.gz", hash = "sha256:5731d7b7cee6b0c552fd56b5eba6a0a163a32d6998371a77d75703e67aebaf99", size = 11464, upload-time = "2025-07-30T22:17:49.136Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/93/60/0d76d2337013937ca04f3861dd9924ff6f4058e02fb33870f581837f636a/logfmter-0.0.10-py3-none-any.whl", hash = "sha256:056280acccc027dd275b013cb3492dcb15fef02ad955b7a839242007685d0351", size = 8410, upload-time = "2025-07-30T22:17:48.027Z" },
 ]
 
 [[package]]

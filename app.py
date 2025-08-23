@@ -7,11 +7,18 @@ from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from logfmter import Logfmter
 from pydantic_settings import BaseSettings
 
 from beetsstatistics import AlbumSort, BeetsStatistics, DBNotFoundError, DBQueryError
 
-logger = logging.getLogger("uvicorn.error")
+log_format = "%(asctime)s [%(levelname)-7s] [%(name)-12s] %(name)s - %(message)s"
+date_format = "%H:%M:%S"
+console_handler = logging.StreamHandler()
+console_handler.setFormatter(Logfmter(keys=["at", "name", "asctime"]))
+logging.basicConfig(level=logging.INFO, handlers=[console_handler])
+
+logger = logging.getLogger("beets-statistics")
 
 
 class InitializationError(Exception):
@@ -66,7 +73,13 @@ async def get_general_stats(
         format_count, lossless, lossy, unknown = beets_statistics.get_track_formats()
 
         recently_added_albums = beets_statistics.get_recently_added_albums()
-    except (DBQueryError, DBNotFoundError) as e:
+    except DBNotFoundError as e:
+        logger.error("Could not find database", exc_info=e)
+        raise HTTPException(
+            status_code=500, detail="Could not find database: {}".format(e)
+        )
+    except DBQueryError as e:
+        logger.error("Could not query general statistics", exc_info=e)
         raise HTTPException(
             status_code=500, detail="Could not query general statistics: {}".format(e)
         )

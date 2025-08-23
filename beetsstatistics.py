@@ -63,6 +63,22 @@ class BeetsStatistics:
         if self.connection:
             self.connection.close()
 
+    def convert_row_to_album(self, album):
+        return_album = Album()
+        return_album.id = album["album_id"]
+        return_album.mb_albumid = album["mb_albumid"]
+        return_album.title = album["album"]
+        return_album.tracks = album["tracks"]
+        return_album.track_total = album["tracktotal"]
+        return_album.complete_percentage = album["complete"]
+        return_album.album_artist = album["albumartist"]
+        return_album.genre = album["genre"]
+        return_album.year = album["year"]
+        return_album.original_year = album["original_year"]
+        return_album.barcode = album["barcode"]
+        # id |artpath|added |albumartist |albumartist_sort|albumartist_credit|albumartists|albumartists_sort |albumartists_credit|album |genre |style|discogs_albumid|discogs_artistid|discogs_labelid|year|month|day|disctotal|comp|mb_albumid|mb_albumartistid|albumtype|albumtypes|label |barcode |mb_releasegroupid |release_group_title |asin|catalognum|script|language|country|albumstatus|albumdisambig|releasegroupdisambig|rg_album_gain|rg_album_peak|r128_album_gain|original_year|original_month|original_day|
+        return return_album
+
     def get_albums_from_db(self, sort_by: AlbumSort = AlbumSort.ARTIST):
         connection = self.get_db_connection()
         cursor = connection.cursor()
@@ -92,19 +108,7 @@ class BeetsStatistics:
 
         result = []
         for album in albums:
-            return_album = Album()
-            return_album.id = album["album_id"]
-            return_album.mb_albumid = album["mb_albumid"]
-            return_album.title = album["album"]
-            return_album.tracks = album["tracks"]
-            return_album.track_total = album["tracktotal"]
-            return_album.complete_percentage = album["complete"]
-            return_album.album_artist = album["albumartist"]
-            return_album.genre = album["genre"]
-            return_album.year = album["year"]
-            return_album.original_year = album["original_year"]
-            return_album.barcode = album["barcode"]
-            # id |artpath|added |albumartist |albumartist_sort|albumartist_credit|albumartists|albumartists_sort |albumartists_credit|album |genre |style|discogs_albumid|discogs_artistid|discogs_labelid|year|month|day|disctotal|comp|mb_albumid|mb_albumartistid|albumtype|albumtypes|label |barcode |mb_releasegroupid |release_group_title |asin|catalognum|script|language|country|albumstatus|albumdisambig|releasegroupdisambig|rg_album_gain|rg_album_peak|r128_album_gain|original_year|original_month|original_day|
+            return_album = self.convert_row_to_album(album)
 
             result.append(return_album)
         return result
@@ -406,21 +410,31 @@ class BeetsStatistics:
         try:
             cursor = self.get_db_connection().cursor()
             query = """select
-                            a.id,
-                            a.album,
-                            a.albumartist,
-                            a.mb_albumid,
-                            a.mb_year,
-                            a.genre,
-                            
-                        
-                        from albums a order by a.added desc 
+                            i.album_id,
+                            i.album,
+                            count(i.track) as tracks,
+                            max(i.tracktotal) as tracktotal,
+                            ifnull(round(count(i.track)/ cast(max(i.tracktotal) as float), 2) * 100, 0) as complete,
+                            a.*
+                        from
+                            albums a
+                        left join
+                            items i on
+                            i.album_id = a.id
+                        where
+                            album_id is not null
+                        group by
+                            i.album_id
+                        order by a.added desc 
                         limit 10;"""
             cursor.execute(query)
             results = cursor.fetchall()
 
             cursor.close()
-            return results
+
+            result_albums = [ self.convert_row_to_album(album) for album in results ]
+
+            return result_albums
         except sqlite3.Error as e:
             raise DBQueryError from e
 
