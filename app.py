@@ -7,11 +7,18 @@ from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from logfmter import Logfmter
 from pydantic_settings import BaseSettings
 
 from beetsstatistics import AlbumSort, BeetsStatistics, DBNotFoundError, DBQueryError
 
-logger = logging.getLogger("uvicorn.error")
+log_format = "%(asctime)s [%(levelname)-7s] [%(name)-12s] %(name)s - %(message)s"
+date_format = "%H:%M:%S"
+console_handler = logging.StreamHandler()
+console_handler.setFormatter(Logfmter(keys=["at", "name", "asctime"]))
+logging.basicConfig(level=logging.INFO, handlers=[console_handler])
+
+logger = logging.getLogger("beets-statistics")
 
 
 class InitializationError(Exception):

@@ -9,6 +9,7 @@ dependencies = [
     "humanize",
     "pydantic",
     "pydantic-settings",
+    "logfmter>=0.0.10",
 ]
 
 [tool.pytest.ini_options]
