@@ -432,9 +432,22 @@ class BeetsStatistics:
 
             cursor.close()
 
-            result_albums = [ self.convert_row_to_album(album) for album in results ]
+            result_albums = [self.convert_row_to_album(album) for album in results]
 
             return result_albums
+        except sqlite3.Error as e:
+            raise DBQueryError from e
+
+    def get_worst_quality_tracks(self):
+        try:
+            cursor = self.get_db_connection().cursor()
+            query = """select i.* from items i order by i.bitrate asc limit 10;"""
+            cursor.execute(query)
+            results = cursor.fetchall()
+
+            cursor.close()
+
+            return results
         except sqlite3.Error as e:
             raise DBQueryError from e
 

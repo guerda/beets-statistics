@@ -174,10 +174,11 @@ async def get_track_quality(
     beets_statistics: Annotated[BeetsStatistics, Depends(get_beets_statistics)],
 ):
     bitrates = beets_statistics.get_track_quality()
+    worst_quality_tracks = beets_statistics.get_worst_quality_tracks()
     return templates.TemplateResponse(
         request=request,
         name="quality.html",
-        context={"bitrates": bitrates},
+        context={"bitrates": bitrates, "worst_quality_tracks": worst_quality_tracks},
     )
 
 
