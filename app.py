@@ -10,6 +10,7 @@ from fastapi.templating import Jinja2Templates
 from logfmter import Logfmter
 from pydantic_settings import BaseSettings
 
+from apitool import StaticFilesCache
 from beetsstatistics import AlbumSort, BeetsStatistics, DBNotFoundError, DBQueryError
 
 log_format = "%(asctime)s [%(levelname)-7s] [%(name)-12s] %(name)s - %(message)s"
@@ -51,7 +52,10 @@ async def get_beets_statistics():
 
 settings = Settings()
 app = FastAPI()
-app.mount("/static", StaticFiles(directory="static"), name="static")
+static_files_with_cache = StaticFilesCache(
+    directory="static", cachecontrol="public, max-age: 86400"
+)
+app.mount("/static", static_files_with_cache, name="static")
 
 templates = Jinja2Templates(directory="templates")
 templates.env.filters["quote_plus"] = lambda u: quote_plus(u)
@@ -83,7 +87,7 @@ async def get_general_stats(
         raise HTTPException(
             status_code=500, detail="Could not query general statistics: {}".format(e)
         )
-    return templates.TemplateResponse(
+    response = templates.TemplateResponse(
         request=request,
         name="index.html",
         context={
@@ -99,6 +103,8 @@ async def get_general_stats(
             "recently_added_albums": recently_added_albums,
         },
     )
+    _inject_cache_headers(response.headers)
+    return response
 
 
 @app.get("/albums", response_class=HTMLResponse)
@@ -108,9 +114,11 @@ async def get_album_stats(
     sort_by: AlbumSort = AlbumSort.ARTIST,
 ):
     albums = beets_statistics.get_albums_from_db(sort_by=sort_by)
-    return templates.TemplateResponse(
+    response = templates.TemplateResponse(
         request=request, name="albums.html", context={"albums": albums}
     )
+    _inject_cache_headers(response.headers)
+    return response
 
 
 @app.get("/genres", response_class=HTMLResponse)
@@ -124,11 +132,13 @@ async def get_genre_count(
     for genre in genres[0]:
         genre_list.append(genre["genre"])
         count_list.append(genre["count"])
-    return templates.TemplateResponse(
+    response = templates.TemplateResponse(
         request=request,
         name="genres.html",
         context={"genres": genres, "genre_list": genre_list, "count_list": count_list},
     )
+    _inject_cache_headers(response.headers)
+    return response
 
 
 @app.get("/artists", response_class=HTMLResponse)
@@ -143,7 +153,7 @@ async def get_artist_stats(
         artist_list.append(artist["artist"])
         count_list.append(artist["track_count"])
     count = beets_statistics.get_track_count()
-    return templates.TemplateResponse(
+    response = templates.TemplateResponse(
         request=request,
         name="artists.html",
         context={
@@ -153,6 +163,8 @@ async def get_artist_stats(
             "count_list": count_list,
         },
     )
+    _inject_cache_headers(response.headers)
+    return response
 
 
 @app.get("/decades", response_class=HTMLResponse)
@@ -161,11 +173,13 @@ async def get_track_decades(
     beets_statistics: Annotated[BeetsStatistics, Depends(get_beets_statistics)],
 ):
     decades = beets_statistics.get_track_decades()
-    return templates.TemplateResponse(
+    response = templates.TemplateResponse(
         request=request,
         name="decades.html",
         context={"decades": decades},
     )
+    _inject_cache_headers(response.headers)
+    return response
 
 
 @app.get("/quality", response_class=HTMLResponse)
@@ -175,11 +189,14 @@ async def get_track_quality(
 ):
     bitrates = beets_statistics.get_track_quality()
     worst_quality_tracks = beets_statistics.get_worst_quality_tracks()
-    return templates.TemplateResponse(
+
+    response = templates.TemplateResponse(
         request=request,
         name="quality.html",
         context={"bitrates": bitrates, "worst_quality_tracks": worst_quality_tracks},
     )
+    _inject_cache_headers(response.headers)
+    return response
 
 
 @app.get("/genre-decade-heatmap", response_class=HTMLResponse)
@@ -222,7 +239,7 @@ async def get_genre_decade_heatmap(
         sorted_genre = dict(sorted(heatmap[genre].items()))
         heatmap[genre] = sorted_genre
 
-    return templates.TemplateResponse(
+    response = templates.TemplateResponse(
         request=request,
         name="genre-decade-heatmap.html",
         context={
@@ -231,6 +248,8 @@ async def get_genre_decade_heatmap(
             "genre_list": genre_list,
         },
     )
+    _inject_cache_headers(response.headers)
+    return response
 
 
 @app.get("/cover/{album_id}", response_class=FileResponse)
@@ -241,7 +260,21 @@ async def get_album_cover(
     album_cover_path = beets_statistics.get_album_cover_path(album_id)
     if album_cover_path is None:
         album_cover_path = "static/blank.png"
-    return album_cover_path
+
+    response = FileResponse(album_cover_path)
+    _inject_cache_headers_for_images(response.headers)
+    return response
+
+
+def _inject_cache_headers_for_images(headers):
+    headers["Cache-Control"] = "public, max-age: 86400"
+    headers["Vary"] = "Accept-Encoding"
+
+
+def _inject_cache_headers(headers):
+    headers["Cache-Control"] = (
+        "public, s-maxage=30, stale-while-revalidate=30, stale-if-error=300"
+    )
 
 
 @app.get("/added-timeline", response_class=HTMLResponse)
@@ -250,11 +283,13 @@ async def get_added_timeline(
     beets_statistics: Annotated[BeetsStatistics, Depends(get_beets_statistics)],
 ):
     timeline = beets_statistics.get_added_timeline()
-    return templates.TemplateResponse(
+    response = templates.TemplateResponse(
         request=request,
         name="added-timeline.html",
         context={"timeline": timeline},
     )
+    _inject_cache_headers(response.headers)
+    return response
 
 
 @app.get("/duplicates", response_class=HTMLResponse)
@@ -264,9 +299,11 @@ async def get_duplicates(
 ):
     duplicates = beets_statistics.get_duplicates()
 
-    return templates.TemplateResponse(
+    response = templates.TemplateResponse(
         request=request, name="duplicates.html", context={"duplicates": duplicates}
     )
+    _inject_cache_headers(response.headers)
+    return response
 
 
 @app.get("/not-in-mb", response_class=HTMLResponse)
@@ -277,8 +314,10 @@ async def get_not_in_mb(
     items_not_in_mb = beets_statistics.get_items_not_in_mb()
     albums_not_in_mb = beets_statistics.get_albums_not_in_mb()
 
-    return templates.TemplateResponse(
+    response = templates.TemplateResponse(
         request=request,
         name="not-in-mb.html",
         context={"tracks": items_not_in_mb, "albums": albums_not_in_mb},
     )
+    _inject_cache_headers(response.headers)
+    return response
