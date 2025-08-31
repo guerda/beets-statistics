@@ -52,7 +52,9 @@ async def get_beets_statistics():
 
 settings = Settings()
 app = FastAPI()
-static_files_with_cache = StaticFilesCache(directory="static", cachecontrol="public, max-age: 86400")
+static_files_with_cache = StaticFilesCache(
+    directory="static", cachecontrol="public, max-age: 86400"
+)
 app.mount("/static", static_files_with_cache, name="static")
 
 templates = Jinja2Templates(directory="templates")
@@ -85,7 +87,7 @@ async def get_general_stats(
         raise HTTPException(
             status_code=500, detail="Could not query general statistics: {}".format(e)
         )
-    response= templates.TemplateResponse(
+    response = templates.TemplateResponse(
         request=request,
         name="index.html",
         context={
@@ -258,17 +260,22 @@ async def get_album_cover(
     album_cover_path = beets_statistics.get_album_cover_path(album_id)
     if album_cover_path is None:
         album_cover_path = "static/blank.png"
-    
+
     response = FileResponse(album_cover_path)
     _inject_cache_headers_for_images(response.headers)
     return response
+
 
 def _inject_cache_headers_for_images(headers):
     headers["Cache-Control"] = "public, max-age: 86400"
     headers["Vary"] = "Accept-Encoding"
 
+
 def _inject_cache_headers(headers):
-    headers["Cache-Control"] = "public, s-maxage=30, stale-while-revalidate=30, stale-if-error=300"
+    headers["Cache-Control"] = (
+        "public, s-maxage=30, stale-while-revalidate=30, stale-if-error=300"
+    )
+
 
 @app.get("/added-timeline", response_class=HTMLResponse)
 async def get_added_timeline(

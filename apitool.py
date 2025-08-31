@@ -1,6 +1,7 @@
 from fastapi import Response
 from fastapi.staticfiles import StaticFiles
 
+
 class StaticFilesCache(StaticFiles):
     def __init__(self, *args, cachecontrol: str, **kwargs):
         self.cachecontrol = cachecontrol
