@@ -321,3 +321,14 @@ async def get_not_in_mb(
     )
     _inject_cache_headers(response.headers)
     return response
+
+
+@app.get("/health")
+async def get_health(
+    request: Request,
+    beets_statistics: Annotated[BeetsStatistics, Depends(get_beets_statistics)],
+):
+    response = {
+        "database": "ok" if beets_statistics.connection else "no connection",
+    }
+    return response
