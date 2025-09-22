@@ -7,5 +7,5 @@ COPY ./uv.lock ./pyproject.toml /app/
 RUN uv sync --frozen --no-cache
 COPY templates /app/templates/
 COPY static /app/static/
-COPY beetsstatistics.py app.py  /app
+COPY beetsstatistics.py app.py apitool.py /app
 CMD ["/app/.venv/bin/fastapi", "run", "app.py"]
