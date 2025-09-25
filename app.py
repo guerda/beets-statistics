@@ -1,4 +1,5 @@
 import logging
+import time
 from typing import Annotated
 from urllib.parse import quote_plus
 
@@ -18,6 +19,7 @@ date_format = "%H:%M:%S"
 console_handler = logging.StreamHandler()
 console_handler.setFormatter(Logfmter(keys=["at", "name", "asctime"]))
 logging.basicConfig(level=logging.INFO, handlers=[console_handler])
+SLOW_REQUEST_THRESHOLD = 500
 
 logger = logging.getLogger("beets-statistics")
 
@@ -59,6 +61,17 @@ app.mount("/static", static_files_with_cache, name="static")
 
 templates = Jinja2Templates(directory="templates")
 templates.env.filters["quote_plus"] = lambda u: quote_plus(u)
+
+
+@app.middleware("http")
+async def add_slow_request_log(request: Request, call_next):
+    start_time = time.time()
+    response = await call_next(request)
+    process_time = (time.time() - start_time) * 1000
+    logger.debug(f"Completed request in {process_time:.2f} ms")
+    if process_time > SLOW_REQUEST_THRESHOLD:
+        logger.warning("Slow log: {process_time:.2f} ms")
+    return response
 
 
 @app.get("/", response_class=HTMLResponse)
