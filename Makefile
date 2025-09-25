@@ -11,7 +11,7 @@ test:
 	pytest
 
 dev:
-	fastapi dev app.py --host 0.0.0.0
+	MUSICLIBRARY_DB=musiclibrary.db fastapi dev app.py --host 0.0.0.0
 
 prod:
 	fastapi run app.py
