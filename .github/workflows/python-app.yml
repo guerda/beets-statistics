@@ -34,3 +34,5 @@ jobs:
     - name: Test with pytest
       run: |
         uv run pytest
+    - name: Check CVEs
+      run: uv run pip-audit --aliases
