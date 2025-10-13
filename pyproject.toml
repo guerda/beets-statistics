@@ -21,6 +21,7 @@ pythonpath = [
 dev = [
     "ruff",
     "pytest",
+    "pip-audit>=2.9.0",
 ]
 
 [tool.uv]
