@@ -12,7 +12,7 @@
     <content>
       <h2>Quality per track</h2>
       <div id="plot"></div>
-      <div id="boxplot"></div>
+      <div id="violinplot"></div>
 
       <h2>Lowest quality tracks (by bitrate)</h2>
       <table>
@@ -54,12 +54,12 @@
       config = { responsive: true };
       Plotly.newPlot("plot", quality_data, layout, config);
 
-      var quality_data_box = {
+      var quality_data_violin = {
         name: 'Quality',
         x: [{%for bitrate in bitrates %}{{bitrate.bitrate}}, {% endfor %}],
-        type: 'box',
+        type: 'violin',
       };
-      Plotly.newPlot("boxplot", [quality_data_box]);
+      Plotly.newPlot("violinplot", [quality_data_violin]);
     </script>
 
   </body>
