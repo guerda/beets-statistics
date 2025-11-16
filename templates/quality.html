@@ -11,7 +11,6 @@
     {% include 'navigation.html' %}
     <content>
       <h2>Quality per track</h2>
-      <div id="plot"></div>
       <div id="violinplot"></div>
 
       <h2>Lowest quality tracks (by bitrate)</h2>
@@ -32,34 +31,14 @@
     </content>
     {% include 'footer.html' %}
     <script>
-      var quality_data = [{
-        type: 'histogram',
-        histfunc: 'count',
-        y: [{%for bitrate in bitrates %}{{bitrate.bitrate}}, {% endfor %}],
-        nbinsy: 100
-      }];
-      var layout = {
-        yaxis:{
-          autorange:'reversed',
-          automargin: 'width',
-        },
-        height: 700,
-        margin: {
-          l: 45,
-          r: 10,
-          b: 20,
-          t: 0,
-        }
-      };
       config = { responsive: true };
-      Plotly.newPlot("plot", quality_data, layout, config);
 
       var quality_data_violin = {
         name: 'Quality',
         x: [{%for bitrate in bitrates %}{{bitrate.bitrate}}, {% endfor %}],
         type: 'violin',
       };
-      Plotly.newPlot("violinplot", [quality_data_violin]);
+      Plotly.newPlot("violinplot", [quality_data_violin], config);
     </script>
 
   </body>
