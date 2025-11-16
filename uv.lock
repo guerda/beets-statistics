@@ -28,7 +28,7 @@ requires-dist = [
     { name = "fastapi", extras = ["standard"] },
     { name = "humanize" },
     { name = "jinja2" },
-    { name = "logfmter", specifier = ">=0.0.10" },
+    { name = "logfmter", specifier = ">=0.0.11" },
     { name = "pydantic" },
     { name = "pydantic-settings" },
     { name = "pyyaml" },
@@ -373,11 +373,11 @@ wheels = [
 
 [[package]]
 name = "logfmter"
-version = "0.0.10"
+version = "0.0.11"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/cd/32/8cef33e50f2181ea90b77bc504db382c8ae3e9c08c07ec4bea4e631f49b3/logfmter-0.0.10.tar.gz", hash = "sha256:5731d7b7cee6b0c552fd56b5eba6a0a163a32d6998371a77d75703e67aebaf99", size = 11464 }
+sdist = { url = "https://files.pythonhosted.org/packages/41/61/020d6b13a8f116d0d76034e7e988df5ae028b6eb1eee0a087af35b7ce6e8/logfmter-0.0.11.tar.gz", hash = "sha256:47657bcfc1ceecd3434dde9c27973a822a42e7e91c95df333f9d22d8e7c176b1", size = 12403 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/93/60/0d76d2337013937ca04f3861dd9924ff6f4058e02fb33870f581837f636a/logfmter-0.0.10-py3-none-any.whl", hash = "sha256:056280acccc027dd275b013cb3492dcb15fef02ad955b7a839242007685d0351", size = 8410 },
+    { url = "https://files.pythonhosted.org/packages/6d/4e/473d4dc27a3b9b4333a89f1dd9c6d926379a61e89d005c8b698bb44d8715/logfmter-0.0.11-py3-none-any.whl", hash = "sha256:09f79349c81bb450b02d59b4314de326a16dfafd2ee3b7bcdf3d6bcc5313a4de", size = 8969 },
 ]
 
 [[package]]
