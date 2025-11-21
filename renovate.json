@@ -3,5 +3,8 @@
   "extends": [
     "config:recommended"
   ],
-  "assignees": ["guerda"]
+  "assignees": ["guerda"],
+  "lockFileMaintenance": {
+    "enabled": true
+  }
 }
