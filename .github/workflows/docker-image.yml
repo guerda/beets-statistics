@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
     - name: Login to GHCR.io
       run: docker login --username guerda --password ${{ secrets.PAT }} ghcr.io
     - name: Build the Docker image
