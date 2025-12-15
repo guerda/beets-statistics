@@ -407,6 +407,9 @@ class BeetsStatistics:
             raise DBQueryError from e
 
     def get_recently_added_albums(self):
+        """
+        Query and return the newest album added to the database.
+        """
         try:
             cursor = self.get_db_connection().cursor()
             query = """select
@@ -422,7 +425,8 @@ class BeetsStatistics:
                             items i on
                             i.album_id = a.id
                         where
-                            album_id is not null
+                            a.album_id is not null and
+                            a.album != ''
                         group by
                             i.album_id
                         order by a.added desc 
