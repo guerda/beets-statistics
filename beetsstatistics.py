@@ -123,7 +123,7 @@ class BeetsStatistics:
                 """select
                         case
                             when a.genre = '' then "n/a"
-                            else ifnull(a.genre, "n/a")
+                            else ifnull(case when instr(a.genre, ';') then substr(a.genre, 0, instr(a.genre, ';')) else a.genre end , "n/a")
                         end as genre,
                         count(1) as count
                     from
@@ -287,11 +287,11 @@ class BeetsStatistics:
         try:
             cursor = self.get_db_connection().cursor()
             query = """select 
-                            genre, 
+                            case when instr(a.genre, ';') then substr(a.genre, 0, instr(a.genre, ';')) else a.genre end as genre,
                             YEAR / 10 * 10 as decade, 
                             count(1) as count
-                        from albums 
-                        where genre != '' and year > 0
+                        from albums a
+                        where a.genre != '' and a.year > 0
                         group by 1,2 
                         order by 1,2 asc"""
             res = cursor.execute(query)
