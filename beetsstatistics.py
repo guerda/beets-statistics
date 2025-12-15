@@ -425,7 +425,7 @@ class BeetsStatistics:
                             items i on
                             i.album_id = a.id
                         where
-                            a.album_id is not null and
+                            i.album_id is not null and
                             a.album != ''
                         group by
                             i.album_id
