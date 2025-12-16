@@ -11,7 +11,7 @@
     {% include 'navigation.html' %}
     <content>
       <h2>Genre Decade Heatmap</h2>
-      <div id="plot"></div>
+      <div id="plot-large"></div>
     </content>
     {% include 'footer.html' %}
     <script>
@@ -38,7 +38,7 @@
         }
       };
       config = { responsive: true };
-      Plotly.newPlot("plot", heatmap_data, layout, config);
+      Plotly.newPlot("plot-large", heatmap_data, layout, config);
     </script>
 
 

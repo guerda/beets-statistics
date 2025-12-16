@@ -212,3 +212,7 @@ table.data-table col.progress-bar-col {
 div#plot {
   height: 50vh;
 }
+
+div#plot-large {
+  height: 90vh;
+}
