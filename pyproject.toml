@@ -3,7 +3,7 @@ name = ""
 version = "0.0.1"
 requires-python = ">=3.13,<4"
 dependencies = [
-    "fastapi[standard]>=0.124.4",
+    "fastapi[standard]==0.124.4",
     "pyyaml",
     "jinja2",
     "humanize",
