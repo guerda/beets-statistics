@@ -4,12 +4,12 @@ version = "0.0.1"
 requires-python = ">=3.13,<4"
 dependencies = [
     "fastapi[standard]==0.128.0",
-    "pyyaml",
-    "jinja2",
-    "humanize",
-    "pydantic",
-    "pydantic-settings",
-    "logfmter>=0.0.11",
+    "pyyaml==6.0.3",
+    "jinja2==3.1.6",
+    "humanize==4.14.0",
+    "pydantic==2.12.5",
+    "pydantic-settings==2.12.0",
+    "logfmter==0.0.11",
 ]
 
 [tool.pytest.ini_options]
@@ -19,9 +19,9 @@ pythonpath = [
 
 [dependency-groups]
 dev = [
-    "ruff",
-    "pytest",
-    "pip-audit>=2.9.0",
+    "ruff==0.14.9",
+    "pytest==9.0.2",
+    "pip-audit==2.10.0",
 ]
 
 [tool.uv]
