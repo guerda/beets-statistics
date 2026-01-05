@@ -139,7 +139,7 @@ async def get_genre_count(
     request: Request,
     beets_statistics: Annotated[BeetsStatistics, Depends(get_beets_statistics)],
 ):
-    genres = beets_statistics.get_genre_count(limit=20)
+    genres = beets_statistics.get_genre_count(limit=30)
     genre_list = []
     count_list = []
     for genre in genres[0]:
