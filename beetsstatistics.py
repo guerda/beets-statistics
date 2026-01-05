@@ -121,13 +121,11 @@ class BeetsStatistics:
             cursor = self.get_db_connection().cursor()
             res = cursor.execute(
                 """select
-                        case
-                            when a.genre = '' then "n/a"
-                            else ifnull(case when instr(a.genre, ';') then substr(a.genre, 0, instr(a.genre, ';')) else a.genre end , "n/a")
-                        end as genre,
+                        ifnull(case when instr(a.genre, ';') then substr(a.genre, 0, instr(a.genre, ';')) else a.genre end , "n/a") as genre,
                         count(1) as count
                     from
                         albums a
+                    where a.genre != ''
                     group by
                         a.genre
                     order by
