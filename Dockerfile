@@ -1,6 +1,6 @@
 FROM python:3.13-slim@sha256:1f3781f578e17958f55ada96c0a827bf279a11e10d6a458ecb8bde667afbb669
 # Install uv.
-COPY --from=ghcr.io/astral-sh/uv:latest@sha256:15f68a476b768083505fe1dbfcc998344d0135f0ca1b8465c4760b323904f05a /uv /uvx /bin/
+COPY --from=ghcr.io/astral-sh/uv:latest@sha256:2320e6c239737dc73cccce393a8bb89eba2383d17018ee91a59773df802c20e6 /uv /uvx /bin/
 
 WORKDIR /app
 COPY ./uv.lock ./pyproject.toml /app/
