@@ -17,4 +17,4 @@ prod:
 	fastapi run app.py
 
 changelog:
-	git-cliff -O CHANGELOG.md
+	git-cliff -o CHANGELOG.md
