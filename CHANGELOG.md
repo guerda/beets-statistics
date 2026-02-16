@@ -1,4 +1,4 @@
-## [unreleased]
+## [1.0.3] - 2026-02-16
 
 ### 🚀 Features
 
@@ -59,6 +59,7 @@
 
 - Update changelog
 - New changelog format
+- Revert to old changelog format
 
 ### 🎨 Styling
 
