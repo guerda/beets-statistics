@@ -274,7 +274,10 @@ async def get_album_cover(
     if album_cover_path is None:
         album_cover_path = "static/blank.png"
 
-    response = FileResponse(album_cover_path)
+    if isinstance(album_cover_path, (bytes, bytearray)):
+        response = FileResponse(album_cover_path.decode("utf-8"))
+    else:
+        response = FileResponse(album_cover_path)
     _inject_cache_headers_for_images(response.headers)
     return response
 
