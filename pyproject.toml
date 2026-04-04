@@ -22,6 +22,7 @@ dev = [
     "ruff==0.15.9",
     "pytest==9.0.2",
     "pip-audit==2.10.0",
+    "ty>=0.0.28",
 ]
 
 [tool.uv]
