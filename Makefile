@@ -1,11 +1,17 @@
-.PHONY: all fmt test changelog
+.PHONY: all fmt qa deps test changelog
 
-all: fmt test
+all: fmt qa  deps test
 
 fmt:
 	ruff format
-	ruff check --fix
+	ruff check --fix --select I
 
+qa:
+	ruff check
+	ty check
+
+deps:
+	pip-audit
 
 test:
 	pytest
