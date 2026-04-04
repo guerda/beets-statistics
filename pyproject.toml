@@ -1,5 +1,5 @@
 [project]
-name = ""
+name = "beets-statistics"
 version = "0.0.1"
 requires-python = ">=3.13,<4"
 dependencies = [
