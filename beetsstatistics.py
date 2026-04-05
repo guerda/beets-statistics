@@ -3,6 +3,7 @@ import os
 import os.path
 import sqlite3
 from enum import Enum
+from typing import Optional
 
 import yaml
 
@@ -20,7 +21,22 @@ class DBQueryError(Exception):
 
 class Album:
     def __repr__(self):
-        return f"ID: {self.id}, Title: {self.title}, Tracks: {self.tracks}/{self.track_total} ({self.complete_percentage}%), Album artist: {self.album_artist}, Genre: {self.genre}, Year: {self.year} ({self.original_year}), Album Art: {self.album_cover}"
+        return f"ID: {self.id}, Title: {self.title}, Tracks: {self.tracks}/{self.tracks_total} ({self.complete_percentage}%), Album artist: {self.album_artist}, Genre: {self.genre}, Year: {self.year} ({self.original_year}), Album Art: {self.album_cover}"
+
+    def __init__(self):
+        self.id = None
+        self.title = None
+        self.tracks = None
+        self.tracks_total = None
+        self.complete_percentage = None
+        self.album_artist = None
+        self.album_artist = None
+        self.genre = None
+        self.year = None
+        self.original_year = None
+        self.album_cover = None
+        self.barcode = None
+        self.mb_albumid = None
 
 
 class AlbumSort(Enum):
@@ -30,8 +46,8 @@ class AlbumSort(Enum):
 
 
 class BeetsStatistics:
-    def __init__(self, db_file: str):
-        self.db_file = db_file
+    def __init__(self, db_file: str | None):
+        self.db_file: str | None = db_file
         self.connection = None
 
     def get_db_file_name(self):
@@ -69,7 +85,7 @@ class BeetsStatistics:
         return_album.mb_albumid = album["mb_albumid"]
         return_album.title = album["album"]
         return_album.tracks = album["tracks"]
-        return_album.track_total = album["tracktotal"]
+        return_album.tracks_total = album["tracktotal"]
         return_album.complete_percentage = album["complete"]
         return_album.album_artist = album["albumartist"]
         return_album.genre = album["genre"]
@@ -176,10 +192,10 @@ class BeetsStatistics:
               count(1) as count
               from
                   items"""
-        track_count = self._query_one_value(query)
+        track_count: int = self._query_one_int(query)
         return track_count
 
-    def _query_one_value(self, query: str):
+    def _query_one_value(self, query: str) -> Optional[str | int]:
         try:
             cursor = self.get_db_connection().cursor()
             res = cursor.execute(query)
@@ -192,20 +208,34 @@ class BeetsStatistics:
         except sqlite3.Error as e:
             raise DBQueryError from e
 
+    def _query_one_int(self, query: str) -> int:
+        result: str | int | None = self._query_one_value(query)
+        if result:
+            return int(result)
+        else:
+            return -1
+
+    def _query_one_string(self, query: str) -> str | None:
+        result: str | int | None = self._query_one_value(query)
+        if result:
+            return str(result)
+        else:
+            return None
+
     def get_album_count(self):
         query = """select count(1) as count from albums"""
-        return self._query_one_value(query)
+        return self._query_one_int(query)
 
     def get_playback_length(self):
         query = """SELECT sum(length) FROM items i"""
-        return self._query_one_value(query)
+        return self._query_one_int(query)
 
     def get_file_size(self):
         query = """SELECT
                     sum(i.bitrate * i."length" / 8) AS SIZE
                 FROM
                     items i;"""
-        return self._query_one_value(query)
+        return self._query_one_int(query)
 
     def get_avg_bpm(self):
         query = """SELECT
@@ -214,7 +244,7 @@ class BeetsStatistics:
                     items i
                 WHERE
                     i.bpm > 0"""
-        return self._query_one_value(query)
+        return self._query_one_int(query)
 
     def map_file_format_to_lossy(self, formats):
         lossy = 0
@@ -301,8 +331,8 @@ class BeetsStatistics:
             raise DBQueryError from e
 
     def get_album_cover_path(self, album_id: int):
-        query = """select artpath from albums where id = {}""".format(album_id)
-        path = self._query_one_value(query)
+        query: str = """select artpath from albums where id = {}""".format(album_id)
+        path: str | None = self._query_one_string(query)
 
         if path and os.path.isfile(path):
             return path
