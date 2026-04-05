@@ -1,7 +1,25 @@
 [project]
 name = "beets-statistics"
+description = "Generate insights into your music collection with beets"
+readme = "README.md"
 version = "0.0.1"
 requires-python = ">=3.13,<4"
+license = "GPL v3"
+license-files = ["LICENSE.md"]
+authors = [
+    {name = "Philip guerda Gillißen"},
+]
+maintainers = [
+    {name = "Philip guerda Gillißen"},
+]
+classifiers = [
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.13",
+    "Environment :: No Input/Output (Daemon)",
+    "Environment :: Web Environment",
+    "Framework :: FastAPI",
+    "Typing :: Typed",
+]
 dependencies = [
     "fastapi[standard]==0.135.3",
     "pyyaml==6.0.3",
@@ -11,6 +29,14 @@ dependencies = [
     "pydantic-settings==2.13.1",
     "logfmter==0.0.12",
 ]
+
+[project.urls]
+Source = "https://github.com/guerda/beets-statistics/"
+Issues = "https://github.com/guerda/beets-statistics/issues"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [tool.pytest.ini_options]
 pythonpath = [
@@ -33,4 +59,6 @@ name = "pypi"
 url = "https://pypi.org/simple"
 
 [tool.ruff.lint]
-select = ["I"]
+select = [
+    "I",       # isort
+]
