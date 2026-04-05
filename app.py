@@ -29,7 +29,7 @@ class InitializationError(Exception):
 
 
 class Settings(BaseSettings):
-    musiclibrary_db: str
+    musiclibrary_db: str | None
 
 
 beets_statistics = None
@@ -52,7 +52,7 @@ async def get_beets_statistics():
         beets_statistics.close()
 
 
-settings = Settings()
+settings = Settings(musiclibrary_db=None)
 app = FastAPI()
 static_files_with_cache = StaticFilesCache(
     directory="static", cachecontrol="public, max-age: 86400"
@@ -267,7 +267,7 @@ async def get_genre_decade_heatmap(
 
 @app.get("/cover/{album_id}", response_class=FileResponse)
 async def get_album_cover(
-    album_id: str,
+    album_id: int,
     beets_statistics: Annotated[BeetsStatistics, Depends(get_beets_statistics)],
 ):
     album_cover_path = beets_statistics.get_album_cover_path(album_id)

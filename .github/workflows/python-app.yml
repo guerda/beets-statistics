@@ -31,8 +31,11 @@ jobs:
     - name: Lint with ruff
       run: |
         uv run ruff check . --statistics
+    - name: Check types with ty
+      run: uv run ty check
+    - name: Check CVEs
+      run: uv run pip-audit --aliases
     - name: Test with pytest
       run: |
         uv run pytest
-    - name: Check CVEs
-      run: uv run pip-audit --aliases
+
