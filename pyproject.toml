@@ -46,7 +46,7 @@ pythonpath = [
 [dependency-groups]
 dev = [
     "ruff==0.15.10",
-    "pytest==9.0.2",
+    "pytest==9.0.3",
     "pip-audit==2.10.0",
     "ty>=0.0.28",
 ]
