@@ -6,5 +6,10 @@
   "assignees": ["guerda"],
   "lockFileMaintenance": {
     "enabled": true
-  }
+  },
+  "packageRules": [
+	{                                                         "minimumReleaseAge": "3 days",
+	  "matchPackageNames": ["/.*/"]
+	}
+  ]
 }
