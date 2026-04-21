@@ -19,6 +19,10 @@ class DBQueryError(Exception):
     pass
 
 
+class ConfigFileNotFoundError(Exception):
+    pass
+
+
 class Album:
     def __repr__(self):
         return f"ID: {self.id}, Title: {self.title}, Tracks: {self.tracks}/{self.tracks_total} ({self.complete_percentage}%), Album artist: {self.album_artist}, Genre: {self.genre}, Year: {self.year} ({self.original_year}), Album Art: {self.album_cover}"
@@ -54,11 +58,14 @@ class BeetsStatistics:
         if self.db_file is not None:
             return self.db_file
         db_config_key = "library"
-        # TODO Catch exception if file does not exist
         config_file_name = os.path.expanduser("~/.config/beets/config.yaml")
-        with open(config_file_name, "r") as file:
-            config = yaml.safe_load(file)
-            return os.path.expanduser(config[db_config_key])
+        try:
+            # TODO Catch exception if file does not exist
+            with open(config_file_name, "r") as file:
+                config = yaml.safe_load(file)
+                return os.path.expanduser(config[db_config_key])
+        except Exception as e:
+            raise ConfigFileNotFoundError from e
 
     def get_db_connection(self):
         if self.connection is not None:
