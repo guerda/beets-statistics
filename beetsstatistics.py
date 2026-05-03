@@ -1,4 +1,5 @@
 import argparse
+import logging
 import os
 import os.path
 import sqlite3
@@ -47,6 +48,9 @@ class AlbumSort(Enum):
     ARTIST = "albumartist_sort"
     ALBUM = "album"
     YEAR = "year"
+
+
+logger = logging.getLogger("beets-statistics-backend")
 
 
 class BeetsStatistics:
@@ -225,7 +229,7 @@ class BeetsStatistics:
     def _query_one_string(self, query: str) -> Optional[str]:
         result: Optional[bytearray | int] = self._query_one_value(query)
 
-        if isinstance(result, bytearray) and result:
+        if isinstance(result, (bytearray, bytes)) and result:
             return result.decode("utf-8")
         else:
             return None
@@ -341,7 +345,7 @@ class BeetsStatistics:
     def get_album_cover_path(self, album_id: int):
         query: str = """select artpath from albums where id = {}""".format(album_id)
         path: str | None = self._query_one_string(query)
-        print(path)
+        logger.debug(f"{album_id}: {path}")
         if path and os.path.isfile(path):
             return path
         else:

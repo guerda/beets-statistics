@@ -18,7 +18,7 @@ log_format = "%(asctime)s [%(levelname)-7s] [%(name)-12s] %(name)s - %(message)s
 date_format = "%H:%M:%S"
 console_handler = logging.StreamHandler()
 console_handler.setFormatter(Logfmter(keys=["at", "name", "asctime"]))
-logging.basicConfig(level=logging.DEBUG, handlers=[console_handler])
+logging.basicConfig(level=logging.INFO, handlers=[console_handler])
 SLOW_REQUEST_THRESHOLD = 500
 
 logger = logging.getLogger("beets-statistics")
