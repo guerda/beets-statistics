@@ -18,7 +18,7 @@ log_format = "%(asctime)s [%(levelname)-7s] [%(name)-12s] %(name)s - %(message)s
 date_format = "%H:%M:%S"
 console_handler = logging.StreamHandler()
 console_handler.setFormatter(Logfmter(keys=["at", "name", "asctime"]))
-logging.basicConfig(level=logging.INFO, handlers=[console_handler])
+logging.basicConfig(level=logging.DEBUG, handlers=[console_handler])
 SLOW_REQUEST_THRESHOLD = 500
 
 logger = logging.getLogger("beets-statistics")
@@ -272,12 +272,12 @@ async def get_album_cover(
 ):
     album_cover_path = beets_statistics.get_album_cover_path(album_id)
     if album_cover_path is None:
+        logger.debug("No album cover found in DB")
         album_cover_path = "static/blank.png"
 
-    if isinstance(album_cover_path, (bytes, bytearray)):
-        response = FileResponse(album_cover_path.decode("utf-8"))
-    else:
-        response = FileResponse(album_cover_path)
+    logger.debug("Album found at '{}'".format(album_cover_path))
+    logger.debug("album encoded without any specific encoding")
+    response = FileResponse(album_cover_path)
     _inject_cache_headers_for_images(response.headers)
     return response
 

@@ -222,10 +222,10 @@ class BeetsStatistics:
         else:
             return -1
 
-    def _query_one_string(self, query: str) -> str | None:
-        result: str | int | None = self._query_one_value(query)
+    def _query_one_string(self, query: str) -> bytearray | None:
+        result: bytearray | None = self._query_one_value(query)
         if result:
-            return str(result)
+            return result.decode("utf-8")
         else:
             return None
 
@@ -340,8 +340,8 @@ class BeetsStatistics:
     def get_album_cover_path(self, album_id: int):
         query: str = """select artpath from albums where id = {}""".format(album_id)
         path: str | None = self._query_one_string(query)
-
-        if path and os.path.isfile(path):
+        print(path)
+        if path:  # and os.path.isfile(path):
             return path
         else:
             return None
