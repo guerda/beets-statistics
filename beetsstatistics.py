@@ -202,7 +202,7 @@ class BeetsStatistics:
         track_count: int = self._query_one_int(query)
         return track_count
 
-    def _query_one_value(self, query: str) -> Optional[str | int]:
+    def _query_one_value(self, query: str) -> Optional[bytearray | int]:
         try:
             cursor = self.get_db_connection().cursor()
             res = cursor.execute(query)
@@ -216,15 +216,16 @@ class BeetsStatistics:
             raise DBQueryError from e
 
     def _query_one_int(self, query: str) -> int:
-        result: str | int | None = self._query_one_value(query)
+        result: Optional[bytearray | int] = self._query_one_value(query)
         if result:
             return int(result)
         else:
             return -1
 
-    def _query_one_string(self, query: str) -> bytearray | None:
-        result: bytearray | None = self._query_one_value(query)
-        if result:
+    def _query_one_string(self, query: str) -> Optional[str]:
+        result: Optional[bytearray | int] = self._query_one_value(query)
+
+        if isinstance(result, bytearray) and result:
             return result.decode("utf-8")
         else:
             return None
@@ -341,7 +342,7 @@ class BeetsStatistics:
         query: str = """select artpath from albums where id = {}""".format(album_id)
         path: str | None = self._query_one_string(query)
         print(path)
-        if path:  # and os.path.isfile(path):
+        if path and os.path.isfile(path):
             return path
         else:
             return None
