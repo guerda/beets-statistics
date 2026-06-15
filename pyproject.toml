@@ -49,7 +49,7 @@ pythonpath = [
 dev = [
     "ruff==0.15.16",
     "pytest==9.0.3",
-    "pip-audit==2.10.0",
+    "pip-audit==2.10.1",
     "ty>=0.0.28",
 ]
 
