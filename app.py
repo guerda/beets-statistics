@@ -84,7 +84,7 @@ async def add_slow_request_log(request: Request, call_next):
     process_time = (time.time() - start_time) * 1000
     logger.debug(f"Completed request in {process_time:.2f} ms")
     if process_time > SLOW_REQUEST_THRESHOLD:
-        logger.warning("Slow log: {process_time:.2f} ms")
+        logger.warning(f"Slow log: {process_time:.2f} ms")
     return response
 
 
