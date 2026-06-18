@@ -17,7 +17,7 @@ test:
 	pytest
 
 dev:
-	MUSICLIBRARY_DB=musiclibrary.db LOG_LEVEL=debug fastapi dev app.py --host 0.0.0.0
+	MUSICLIBRARY_DB=musiclibrary.db LOG_LEVEL=debug MEDIA_PATH=/home/philip/Musik fastapi dev app.py --host 0.0.0.0
 
 prod:
 	fastapi run app.py
