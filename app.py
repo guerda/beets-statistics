@@ -39,6 +39,7 @@ class Settings(BaseSettings):
 
     musiclibrary_db: str | None
     log_level: str | None
+    media_path: str | None
 
 
 beets_statistics = None
@@ -354,10 +355,22 @@ async def get_not_in_mb(
 
 @app.get("/health")
 async def get_health(
-    request: Request,
     beets_statistics: Annotated[BeetsStatistics, Depends(get_beets_statistics)],
 ):
     response = {
         "database": "ok" if beets_statistics.connection else "no connection",
     }
+    return response
+
+
+@app.get("/track/{track_id}")
+async def get_track_file(
+    track_id: int,
+    beets_statistics: Annotated[BeetsStatistics, Depends(get_beets_statistics)],
+) -> FileResponse:
+    track_path: str | None = beets_statistics.get_track_file(track_id)
+    if track_path is None:
+        raise HTTPException(status_code=404, detail=f"File for {track_id} not found.")
+    response = FileResponse(f"{settings.media_path}/{track_path}")
+    _inject_cache_headers_for_images(response.headers)
     return response

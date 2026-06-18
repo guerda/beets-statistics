@@ -51,6 +51,7 @@ class AlbumSort(Enum):
 
 
 logger = logging.getLogger("beets-statistics-backend")
+logger.setLevel(logging.DEBUG)
 
 
 class BeetsStatistics:
@@ -342,7 +343,7 @@ class BeetsStatistics:
         except sqlite3.Error as e:
             raise DBQueryError from e
 
-    def get_album_cover_path(self, album_id: int):
+    def get_album_cover_path(self, album_id: int) -> str | None:
         query: str = """select artpath from albums where id = {}""".format(album_id)
         path: str | None = self._query_one_string(query)
         logger.debug(f"{album_id}: {path}")
@@ -494,6 +495,17 @@ class BeetsStatistics:
             return results
         except sqlite3.Error as e:
             raise DBQueryError from e
+
+    def get_track_file(self, track_id: int) -> str | None:
+        logger.info(f"Requesting track for id {track_id}")
+        track_file_path = self._query_one_string(
+            f"""select i.path from items i where i.id = {track_id};"""
+        )
+        logger.debug(f"Track ID {track_id}: Path {track_file_path}")
+        if track_file_path: #and os.path.isfile(track_file_path):
+            return track_file_path
+        else:
+            return None
 
 
 if __name__ == "__main__":
