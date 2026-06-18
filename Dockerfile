@@ -9,6 +9,7 @@ COPY ./uv.lock ./pyproject.toml /app/
 ENV UV_NO_DEV=1
 ENV UV_COMPILE_BYTECODE=1
 ENV MUSICLIBRARY_DB=/root/.beets/musiclibrary.db
+ENV MEDIA_PATH=/media/music
 
 RUN uv sync --frozen --no-cache
 COPY templates /app/templates/
