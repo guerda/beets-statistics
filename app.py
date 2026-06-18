@@ -1,6 +1,6 @@
 import logging
-import os
 import time
+from pathlib import Path
 from typing import Annotated
 from urllib.parse import quote_plus
 
@@ -37,9 +37,9 @@ class Settings(BaseSettings):
     log_level can be set to "debug" if you want debug output.
     """
 
-    musiclibrary_db: str | None
-    log_level: str | None
-    media_path: str | None
+    musiclibrary_db: str
+    log_level: str
+    media_path: str
 
 
 beets_statistics = None
@@ -371,6 +371,6 @@ async def get_track_file(
     track_path: str | None = beets_statistics.get_track_file(track_id)
     if track_path is None:
         raise HTTPException(status_code=404, detail=f"File for {track_id} not found.")
-    response = FileResponse(f"{settings.media_path}/{track_path}")
+    response = FileResponse(Path(settings.media_path, track_path))
     _inject_cache_headers_for_images(response.headers)
     return response

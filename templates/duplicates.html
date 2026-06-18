@@ -27,7 +27,7 @@
             <li><span style="padding: 0.25em; margin: 0.1em; background-color: hsla(150, 50%, 60%, {{ ( entry.bitrate - 80) / 200 }} );">{{ entry.bitrate }} kbps</span></li>
             <li>{{ entry.filename }}</li>
             <li>{{ entry.trackid }}</li>
-            <li><audio controls><source src="/track/{{entry.id}}" type="audio/mpeg"></audio></li>
+            <li><audio controls><source src="/track/{{entry.id}}" type="audio/mpeg" preload="none" loading="lazy"></audio></li>
             </ul>
           </td>
         {% endfor %}

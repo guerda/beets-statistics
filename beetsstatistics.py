@@ -367,7 +367,7 @@ class BeetsStatistics:
         try:
             cursor = self.get_db_connection().cursor()
             query = """SELECT
-                          i2.mb_trackid, i2.title, i2.artist, i2.bitrate/1000 as bitrate, i2.album, i2.path
+                          i2.id, i2.mb_trackid, i2.title, i2.artist, i2.bitrate/1000 as bitrate, i2.album, i2.path
                        FROM items i2 where i2.mb_trackid in (select i1.mb_trackid from items i1
                         WHERE i1.mb_trackid <> ''
                         GROUP BY i1.mb_trackid
@@ -383,6 +383,7 @@ class BeetsStatistics:
 
             for row in results:
                 trackid = row["mb_trackid"]
+                id = row["id"]
                 title = row["title"]
                 artist = row["artist"]
                 bitrate = row["bitrate"]
@@ -396,6 +397,7 @@ class BeetsStatistics:
                         duplicate_row = []
 
                 duplicate_entry = {
+                    "id": id,
                     "trackid": trackid,
                     "artist": artist,
                     "title": title,
@@ -502,7 +504,7 @@ class BeetsStatistics:
             f"""select i.path from items i where i.id = {track_id};"""
         )
         logger.debug(f"Track ID {track_id}: Path {track_file_path}")
-        if track_file_path: #and os.path.isfile(track_file_path):
+        if track_file_path:  # and os.path.isfile(track_file_path):
             return track_file_path
         else:
             return None
