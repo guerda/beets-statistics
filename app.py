@@ -1,4 +1,5 @@
 import logging
+import os
 import time
 from typing import Annotated
 from urllib.parse import quote_plus
@@ -29,7 +30,15 @@ class InitializationError(Exception):
 
 
 class Settings(BaseSettings):
+    """
+    This settings object reads out all members via environment variables, if they are not specified in the constructor.
+
+    musiclibrary_db is a string defining the location of the beets library.
+    log_level can be set to "debug" if you want debug output.
+    """
+
     musiclibrary_db: str | None
+    log_level: str | None
 
 
 beets_statistics = None
@@ -39,6 +48,7 @@ async def get_beets_statistics():
     global beets_statistics
     try:
         beets_statistics = BeetsStatistics(settings.musiclibrary_db)
+        logger.debug(f"Music Library DBsettings: {settings.musiclibrary_db}")
         if beets_statistics.get_db_connection() is None:
             raise InitializationError("Could not get access database file.")
     except (DBNotFoundError, DBQueryError) as e:
@@ -52,7 +62,10 @@ async def get_beets_statistics():
         beets_statistics.close()
 
 
-settings = Settings(musiclibrary_db=None)
+settings = Settings()  # ty: ignore[missing-argument]
+if settings.log_level == "debug":
+    logger.setLevel(logging.DEBUG)
+
 app = FastAPI()
 static_files_with_cache = StaticFilesCache(
     directory="static", cachecontrol="public, max-age: 86400"
@@ -272,7 +285,7 @@ async def get_album_cover(
 ):
     album_cover_path = beets_statistics.get_album_cover_path(album_id)
     if album_cover_path is None:
-        logger.debug("No album cover found in DB")
+        logger.debug("No album cover found in DB or file system")
         album_cover_path = "static/blank.png"
 
     logger.debug("Album found at '{}'".format(album_cover_path))
