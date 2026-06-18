@@ -8,6 +8,7 @@ COPY ./uv.lock ./pyproject.toml /app/
 # Disable development dependencies
 ENV UV_NO_DEV=1
 ENV UV_COMPILE_BYTECODE=1
+ENV MUSICLIBRARY_DB=/root/.beets/musiclibrary.db
 
 RUN uv sync --frozen --no-cache
 COPY templates /app/templates/
