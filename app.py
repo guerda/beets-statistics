@@ -1,5 +1,6 @@
 import logging
 import time
+from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Annotated
 from urllib.parse import quote_plus
@@ -7,7 +8,6 @@ from urllib.parse import quote_plus
 import humanize
 from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.responses import FileResponse, HTMLResponse
-from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from logfmter import Logfmter
 from pydantic_settings import BaseSettings
@@ -42,11 +42,10 @@ class Settings(BaseSettings):
     media_path: str
 
 
-beets_statistics = None
+beets_statistics: BeetsStatistics | None = None
 
 
 async def get_beets_statistics():
-    global beets_statistics
     try:
         beets_statistics = BeetsStatistics(settings.musiclibrary_db)
         logger.debug(f"Music Library DBsettings: {settings.musiclibrary_db}")
@@ -75,6 +74,13 @@ app.mount("/static", static_files_with_cache, name="static")
 
 templates = Jinja2Templates(directory="templates")
 templates.env.filters["quote_plus"] = lambda u: quote_plus(u)
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    beets_statistics = get_beets_statistics()
+    yield
+    beets_statistics.close()
 
 
 @app.middleware("http")
