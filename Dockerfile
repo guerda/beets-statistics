@@ -14,5 +14,5 @@ ENV MEDIA_PATH=/media/music
 RUN uv sync --frozen --no-cache
 COPY templates /app/templates/
 COPY static /app/static/
-COPY beetsstatistics.py app.py apitool.py /app
+COPY *.py /app
 CMD ["/app/.venv/bin/fastapi", "run", "app.py"]
