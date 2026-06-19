@@ -118,6 +118,7 @@ class BeetsStatistics:
             """select
             i.album_id,
             i.album,
+            i.barcode,
             count(i.track) as tracks,
             max(i.tracktotal) as tracktotal,
             ifnull(round(count(i.track)/ cast(max(i.tracktotal) as float), 2) * 100, 0) as complete,
@@ -231,8 +232,8 @@ class BeetsStatistics:
         else:
             return -1
 
-    def _query_one_string(self, query: str) -> Optional[str]:
-        result: Optional[bytearray | int] = self._query_one_value(query)
+    def _query_one_string(self, query: str, parameters=()) -> Optional[str]:
+        result: Optional[bytearray | int] = self._query_one_value(query, parameters)
 
         if isinstance(result, (bytearray, bytes)) and result:
             return result.decode("utf-8")
@@ -348,8 +349,8 @@ class BeetsStatistics:
             raise DBQueryError from e
 
     def get_album_cover_path(self, album_id: int) -> str | None:
-        query: str = """select artpath from albums where id = {}""".format(album_id)
-        path: str | None = self._query_one_string(query)
+        query: str = "select artpath from albums where id = ?"
+        path: str | None = self._query_one_string(query, (album_id,))
         logger.debug(f"{album_id}: {path}")
         if path and os.path.isfile(path):
             return path
@@ -505,7 +506,7 @@ class BeetsStatistics:
     def get_track_file(self, track_id: int) -> str | None:
         logger.info(f"Requesting track for id {track_id}")
         track_file_path = self._query_one_string(
-            f"""select i.path from items i where i.id = {track_id};"""
+            "select i.path from items i where i.id = ?;", (track_id,)
         )
         logger.debug(f"Track ID {track_id}: Path {track_file_path}")
 
