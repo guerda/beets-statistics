@@ -211,10 +211,10 @@ class BeetsStatistics:
         track_count: int = self._query_one_int(query)
         return track_count
 
-    def _query_one_value(self, query: str) -> Optional[bytearray | int]:
+    def _query_one_value(self, query: str, parameters=()) -> Optional[bytearray | int]:
         try:
             cursor = self.get_db_connection().cursor()
-            res = cursor.execute(query)
+            res = cursor.execute(query, parameters)
             value = res.fetchone()
             cursor.close()
             if value is not None:
@@ -224,8 +224,8 @@ class BeetsStatistics:
         except sqlite3.Error as e:
             raise DBQueryError from e
 
-    def _query_one_int(self, query: str) -> int:
-        result: Optional[bytearray | int] = self._query_one_value(query)
+    def _query_one_int(self, query: str, parameters=()) -> int:
+        result: Optional[bytearray | int] = self._query_one_value(query, parameters)
         if result:
             return int(result)
         else:
@@ -517,6 +517,33 @@ class BeetsStatistics:
                 return None
         else:
             return None
+
+    def get_album(self, album_id: int):
+        logger.info(f"Selecting album {album_id}")
+        try:
+            cursor = self.get_db_connection().cursor()
+            res = cursor.execute(
+                """SELECT * 
+                                    from albums a 
+                                    where a.id = ?;
+                                 """,
+                (album_id,),
+            )
+            value = res.fetchone()
+            cursor.close()
+            if value is not None:
+                return value
+            else:
+                return None
+        except sqlite3.Error as e:
+            raise DBQueryError from e
+
+    def search_album(self, barcode: str) -> int | None:
+        logger.info(f"Search for album with barcode {barcode}")
+        album_id = self._query_one_int(
+            "select a.id from albums a where a.barcode = ?", (barcode,)
+        )
+        return album_id
 
 
 if __name__ == "__main__":

@@ -7,7 +7,7 @@ from urllib.parse import quote_plus
 
 import humanize
 from fastapi import Depends, FastAPI, HTTPException, Request
-from fastapi.responses import FileResponse, HTMLResponse
+from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from logfmter import Logfmter
 
@@ -366,4 +366,34 @@ async def get_track_file(
         raise HTTPException(status_code=404, detail=f"File for {track_id} not found.")
     response = FileResponse(Path(settings.media_path, track_path))
     _inject_cache_headers_for_images(response.headers)
+    return response
+
+
+@app.get("/album")
+async def search_album_by_barcode(
+    barcode: str,
+    beets_statistics: Annotated[BeetsStatistics, Depends(get_beets_statistics)],
+) -> RedirectResponse:
+    album_id = beets_statistics.search_album(barcode)
+    if album_id:
+        return RedirectResponse(f"/album/{album_id}")
+    else:
+        raise HTTPException(
+            status_code=404, detail="No album found for barcode {barcode}"
+        )
+
+
+@app.get("/album/{album_id}")
+async def get_album(
+    request: Request,
+    album_id: int,
+    beets_statistics: Annotated[BeetsStatistics, Depends(get_beets_statistics)],
+) -> HTMLResponse:
+    album = beets_statistics.get_album(album_id)
+    response = templates.TemplateResponse(
+        request=request,
+        name="album.html",
+        context={"album": album},
+    )
+    _inject_cache_headers(response.headers)
     return response
