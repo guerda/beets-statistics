@@ -216,3 +216,10 @@ div#plot {
 div#plot-large {
   height: 90vh;
 }
+
+span#track-title {
+  vertical-align: center;
+  line-height: 160%;
+  margin-left: 1rem;
+  font-family: 'Courier New', Courier, monospace;
+}

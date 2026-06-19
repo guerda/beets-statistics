@@ -1,11 +1,15 @@
 import pytest
 
 from beetsstatistics import BeetsStatistics
+from settings import BeetsStatisticsSettings
 
 
 @pytest.fixture
 def beets_statistics():
-    return BeetsStatistics("test.db")
+    settings = BeetsStatisticsSettings(
+        musiclibrary_db="test.db", log_level="debug", media_path="/"
+    )
+    return BeetsStatistics(settings=settings)
 
 
 def test_map_format_to_lossy_lossless_lossless(beets_statistics: BeetsStatistics):

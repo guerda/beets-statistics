@@ -4,9 +4,12 @@ import os
 import os.path
 import sqlite3
 from enum import Enum
+from pathlib import Path
 from typing import Optional
 
 import yaml
+
+from settings import BeetsStatisticsSettings
 
 LOSSY_FORMATS = ["mp3", "aac", "ogg"]
 LOSSLESS_FORMATS = ["flac", "wav"]
@@ -55,8 +58,9 @@ logger.setLevel(logging.DEBUG)
 
 
 class BeetsStatistics:
-    def __init__(self, db_file: str | None):
-        self.db_file: str | None = db_file
+    def __init__(self, settings: BeetsStatisticsSettings):
+        self.db_file: str | None = settings.musiclibrary_db
+        self.settings = settings
         self.connection = None
 
     def get_db_file_name(self):
@@ -504,8 +508,13 @@ class BeetsStatistics:
             f"""select i.path from items i where i.id = {track_id};"""
         )
         logger.debug(f"Track ID {track_id}: Path {track_file_path}")
-        if track_file_path:  # and os.path.isfile(track_file_path):
-            return track_file_path
+
+        if track_file_path:
+            track_path = Path(self.settings.media_path, track_file_path)
+            if track_path.exists():
+                return track_file_path
+            else:
+                return None
         else:
             return None
 
@@ -516,7 +525,10 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    bs = BeetsStatistics(db_file=args.beets_db)
+    settings = BeetsStatisticsSettings(
+        musiclibrary_db=args.beets_db, log_level="debug", media_path="/"
+    )
+    bs = BeetsStatistics(settings)
     print(bs.get_db_file_name())
     for album in bs.get_albums_from_db():
         print(album.title, album.complete_percentage)  # Complete percentage

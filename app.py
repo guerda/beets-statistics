@@ -10,10 +10,10 @@ from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.templating import Jinja2Templates
 from logfmter import Logfmter
-from pydantic_settings import BaseSettings
 
 from apitool import StaticFilesCache
 from beetsstatistics import AlbumSort, BeetsStatistics, DBNotFoundError, DBQueryError
+from settings import BeetsStatisticsSettings
 
 log_format = "%(asctime)s [%(levelname)-7s] [%(name)-12s] %(name)s - %(message)s"
 date_format = "%H:%M:%S"
@@ -29,25 +29,12 @@ class InitializationError(Exception):
     pass
 
 
-class Settings(BaseSettings):
-    """
-    This settings object reads out all members via environment variables, if they are not specified in the constructor.
-
-    musiclibrary_db is a string defining the location of the beets library.
-    log_level can be set to "debug" if you want debug output.
-    """
-
-    musiclibrary_db: str
-    log_level: str
-    media_path: str
-
-
 beets_statistics: BeetsStatistics | None = None
 
 
 async def get_beets_statistics():
     try:
-        beets_statistics = BeetsStatistics(settings.musiclibrary_db)
+        beets_statistics = BeetsStatistics(settings)
         logger.debug(f"Music Library DBsettings: {settings.musiclibrary_db}")
         if beets_statistics.get_db_connection() is None:
             raise InitializationError("Could not get access database file.")
@@ -62,7 +49,7 @@ async def get_beets_statistics():
         beets_statistics.close()
 
 
-settings = Settings()  # ty: ignore[missing-argument]
+settings = BeetsStatisticsSettings()  # ty: ignore[missing-argument]
 if settings.log_level == "debug":
     logger.setLevel(logging.DEBUG)
 
