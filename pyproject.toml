@@ -61,6 +61,6 @@ name = "pypi"
 url = "https://pypi.org/simple"
 
 [tool.ruff.lint]
-select = [
+extend-select = [
     "I",       # isort
 ]
