@@ -1,3 +1,91 @@
+## [unreleased]
+
+### 🚀 Features
+
+- Beta add duplicate song player
+- Player for duplicates
+- Add album search and detail view
+- Search for barcode in navigation
+- Add description to each page
+- Reduce plotly size by using plotly partial cartesian 3.6.0
+- Allow sorting albums by completeness
+- Add a player for duplicates
+
+### 🐛 Bug Fixes
+
+- *(deps)* Update dependency pydantic-settings to v2.13.0
+- *(deps)* Update dependency fastapi to v0.129.0
+- *(deps)* Update dependency fastapi to v0.131.0
+- *(deps)* Update dependency pydantic-settings to v2.13.1
+- *(deps)* Update dependency fastapi to v0.132.0
+- *(deps)* Update dependency fastapi to v0.133.1
+- *(deps)* Update dependency fastapi to v0.135.1
+- *(deps)* Update dependency logfmter to v0.0.12
+- *(deps)* Update dependency fastapi to v0.135.2
+- *(deps)* Update dependency fastapi to v0.135.3
+- Typing errors reported by ty
+- *(deps)* Update dependency pydantic to v2.13.0
+- *(deps)* Update dependency pydantic to v2.13.1
+- *(deps)* Update dependency fastapi to v0.136.0
+- *(deps)* Update dependency pydantic to v2.13.2
+- Catch exception if config file cannot be found
+- *(deps)* Update dependency pydantic-settings to v2.14.0
+- *(deps)* Update dependency pydantic to v2.13.3
+- *(deps)* Update dependency fastapi to v0.136.1
+- Always return bytearrays to handle album cove correctly
+- *(deps)* Update pip to 26.1.1 security
+- *(deps)* Update dependency pydantic to v2.13.4
+- *(deps)* Update dependency pydantic-settings to v2.14.1
+- *(deps)* Pin to 3.14.0
+- *(deps)* Update dependency fastapi to v0.136.3
+- Show slow log formatting
+- Use path for combining paths
+- *(deps)* Update dependency fastapi to v0.137.1
+- *(deps)* Update dependency fastapi to v0.137.2
+- *(deps)* Update dependency fastapi to v0.138.1
+- *(deps)* Update dependency plotly.js to v3.6.0
+- *(deps)* Update plotly for real
+
+### 💼 Other
+
+- *(deps)* Bump requests from 2.32.5 to 2.33.0
+- *(deps)* Bump pygments from 2.19.2 to 2.20.0
+- Add ty to dependenxies
+- Add qa and deps stage to.makefile
+- Add name to pyproject
+- Expand pyproject.toml
+- Add minimum release age to renovate
+- *(deps)* Bump urllib3 from 2.6.3 to 2.7.0
+- Add debug level in dev target
+- Add environment var for musiclibrary to Dockerfile
+- Add env variable for media path
+- Add environment variable for media path
+- Use extend-select for unused imports
+- Use asterisk for all python files in docker
+- Pin python version to 3.13
+- Add caddyfile for https connection locally
+- Add caddy target for local https
+- *(deps)* Bump msgpack from 1.2.0 to 1.2.1
+- Pin version to Python 3.14.0, no newer version available for Raspberry Pi
+
+### 🚜 Refactor
+
+- Use beets-statistics as singleton via lifecycle manager
+
+### 📚 Documentation
+
+- Create changelog for 1.0.3
+
+### 🎨 Styling
+
+- Change return types to satisfy ty
+- Reduce log level, use logger for backend, too
+- Better log message
+
+### ⚙️ Miscellaneous Tasks
+
+- Add type check to ci pipeline
+- Change order so that pytest starts first in case of existing CVEs
 ## [1.0.3] - 2026-02-16
 
 ### 🚀 Features
