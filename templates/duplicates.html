@@ -13,7 +13,9 @@
       <h2>Duplicate Tracks</h2>
 
       <p>Beets identified {{ duplicates | length }} duplicates in your music collection.</p>
-      <audio controls id="audioPlayer" src=""></audio><span id="track-title"></span>
+      <div id="player">
+        <audio controls id="audioPlayer" src=""></audio><span id="track-title"></span>
+      </div>
 
       {% for duplicate_row in duplicates %}
       <div style="overflow-y: scroll; width:90vw;">
@@ -28,7 +30,7 @@
             <li><span style="padding: 0.25em; margin: 0.1em; background-color: hsla(150, 50%, 60%, {{ ( entry.bitrate - 80) / 200 }} );">{{ entry.bitrate }} kbps</span></li>
             <li>{{ entry.filename }}</li>
             <li>{{ entry.trackid }}</li>
-            <li><button data-track-id="{{entry.id}}" data-artist="{{ entry.artist }}" data-title="{{ entry.title }}">Activate Player</button></li>
+            <li><button data-track-id="{{entry.id}}" data-artist="{{ entry.artist }}" data-title="{{ entry.title }}">Listen to track</button></li>
             </ul>
           </td>
         {% endfor %}
@@ -48,7 +50,8 @@
             const button = event.currentTarget;  
             ds = button.dataset;
             player.src = `/track/${ds.trackId}`;
-            trackTitle.textContent = `${ds.trackId} - ${ds.artist} - ${ds.title}` 
+            trackTitle.textContent = `${ds.trackId} - ${ds.artist} - ${ds.title}`
+	    player.play()
         });      
       });
     </script>

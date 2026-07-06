@@ -217,9 +217,22 @@ div#plot-large {
   height: 90vh;
 }
 
+div#player {
+  position: sticky;
+  top: 0px;
+  background-color: hsla(20.4, 68.1%, 72.9%, 0.4);
+  backdrop-filter: blur(4px);
+}
+
+div#player audio {
+  width: 50vw;
+}
+
 span#track-title {
   vertical-align: center;
   line-height: 160%;
   margin-left: 1rem;
   font-family: 'Courier New', Courier, monospace;
+  font-size: 1.2rem;
+  font-weight: bold;
 }
