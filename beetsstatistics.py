@@ -50,6 +50,7 @@ class Album:
 class AlbumSort(Enum):
     ARTIST = "albumartist_sort"
     ALBUM = "album"
+    COMPLETENESS = "complete"
     YEAR = "year"
 
 
@@ -132,7 +133,7 @@ class BeetsStatistics:
             album_id is not null
         group by
             i.album_id
-        order by a.{} asc
+        order by {} asc
         """.format(sort_by.value)
         )
 
@@ -377,7 +378,7 @@ class BeetsStatistics:
                         WHERE i1.mb_trackid <> ''
                         GROUP BY i1.mb_trackid
                        HAVING COUNT(*) > 1 )
-                       ORDER BY i2.mb_trackid ASC;"""
+                       ORDER BY i2.artist, i2.mb_trackid ASC;"""
             cursor.execute(query)
             results = cursor.fetchall()
 

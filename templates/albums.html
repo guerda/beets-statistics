@@ -12,7 +12,8 @@
     {% include 'navigation.html' %}
     <content>
       <h2>Albums</h2>
-      <div>Sort by: <a href="?sort_by=album">Album</a> <a href="?sort_by=albumartist_sort">Artist</a> <a href="?sort_by=year">Year</a></div>
+      <p>Here is an overview of all your albums including how complete the albums are.</p>
+      <div>Sort by: <a href="?sort_by=album">Album</a> <a href="?sort_by=albumartist_sort">Artist</a> <a href="?sort_by=year">Year</a> <a href="?sort_by=complete_percentage">Completeness</a></div>
 
       <div class="album-cards">
       {% for album in albums %}
