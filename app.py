@@ -49,7 +49,7 @@ async def get_beets_statistics():
         beets_statistics.close()
 
 
-settings = BeetsStatisticsSettings()  # ty: ignore[missing-argument]
+settings = BeetsStatisticsSettings()
 if settings.log_level == "debug":
     logger.setLevel(logging.DEBUG)
 
