@@ -254,7 +254,7 @@ async def get_genre_decade_heatmap(
 
     # Sort z values per genre
     for genre, value in heatmap.items():
-        sorted_genre = dict(sorted(heatmap[genre].items()))
+        sorted_genre = dict(sorted(value.items()))
         value = sorted_genre
 
     response = templates.TemplateResponse(
