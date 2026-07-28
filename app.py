@@ -247,15 +247,15 @@ async def get_genre_decade_heatmap(
         heatmap[genre][decade] = count
 
     # Fill out sparse table
-    for genre in heatmap:
+    for genre, value in heatmap.items():
         for decade in range(min_decade, max_decade + 1, 10):
-            if decade not in heatmap[genre]:
-                heatmap[genre][decade] = 0
+            if decade not in value:
+                value[decade] = 0
 
     # Sort z values per genre
-    for genre in heatmap:
+    for genre, value in heatmap.items():
         sorted_genre = dict(sorted(heatmap[genre].items()))
-        heatmap[genre] = sorted_genre
+        value = sorted_genre
 
     response = templates.TemplateResponse(
         request=request,
