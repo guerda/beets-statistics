@@ -5,7 +5,6 @@ import os.path
 import sqlite3
 from enum import Enum
 from pathlib import Path
-from typing import Optional
 
 import yaml
 
@@ -116,7 +115,7 @@ class BeetsStatistics:
         connection = self.get_db_connection()
         cursor = connection.cursor()
         res = cursor.execute(
-            """select
+            f"""select
             i.album_id,
             i.album,
             i.barcode,
@@ -133,8 +132,8 @@ class BeetsStatistics:
             album_id is not null
         group by
             i.album_id
-        order by {} asc
-        """.format(sort_by.value)
+        order by {sort_by.value} asc
+        """
         )
 
         albums = res.fetchall()
@@ -164,7 +163,7 @@ class BeetsStatistics:
                         a.genre
                     order by
                         2 desc
-                    {}""".format("LIMIT {}".format(limit) if limit > 0 else "")
+                    {}""".format(f"LIMIT {limit}" if limit > 0 else "")
             )
 
             genres = res.fetchall()
@@ -197,7 +196,7 @@ class BeetsStatistics:
                 order by
                     1 desc,
                     i.artist_sort asc
-                {}""".format("LIMIT {}".format(limit) if limit > 0 else "")
+                {}""".format(f"LIMIT {limit}" if limit > 0 else "")
             )
             artists = res.fetchall()
             cursor.close()
@@ -213,7 +212,7 @@ class BeetsStatistics:
         track_count: int = self._query_one_int(query)
         return track_count
 
-    def _query_one_value(self, query: str, parameters=()) -> Optional[bytearray | int]:
+    def _query_one_value(self, query: str, parameters=()) -> bytearray | int | None:
         try:
             cursor = self.get_db_connection().cursor()
             res = cursor.execute(query, parameters)
@@ -227,14 +226,14 @@ class BeetsStatistics:
             raise DBQueryError from e
 
     def _query_one_int(self, query: str, parameters=()) -> int:
-        result: Optional[bytearray | int] = self._query_one_value(query, parameters)
+        result: bytearray | int | None = self._query_one_value(query, parameters)
         if result:
             return int(result)
         else:
             return -1
 
-    def _query_one_string(self, query: str, parameters=()) -> Optional[str]:
-        result: Optional[bytearray | int] = self._query_one_value(query, parameters)
+    def _query_one_string(self, query: str, parameters=()) -> str | None:
+        result: bytearray | int | None = self._query_one_value(query, parameters)
 
         if isinstance(result, (bytearray, bytes)) and result:
             return result.decode("utf-8")

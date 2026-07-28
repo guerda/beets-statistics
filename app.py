@@ -41,7 +41,7 @@ async def get_beets_statistics():
     except (DBNotFoundError, DBQueryError) as e:
         raise HTTPException(
             status_code=500,
-            detail="Could not find find or access database file: {}".format(e),
+            detail=f"Could not find find or access database file: {e}",
         )
     try:
         yield beets_statistics
@@ -99,13 +99,11 @@ async def get_general_stats(
         recently_added_albums = beets_statistics.get_recently_added_albums()
     except DBNotFoundError as e:
         logger.error("Could not find database", exc_info=e)
-        raise HTTPException(
-            status_code=500, detail="Could not find database: {}".format(e)
-        )
+        raise HTTPException(status_code=500, detail=f"Could not find database: {e}")
     except DBQueryError as e:
         logger.error("Could not query general statistics", exc_info=e)
         raise HTTPException(
-            status_code=500, detail="Could not query general statistics: {}".format(e)
+            status_code=500, detail=f"Could not query general statistics: {e}"
         )
     response = templates.TemplateResponse(
         request=request,
@@ -282,7 +280,7 @@ async def get_album_cover(
         logger.debug("No album cover found in DB or file system")
         album_cover_path = "static/blank.png"
 
-    logger.debug("Album found at '{}'".format(album_cover_path))
+    logger.debug(f"Album found at '{album_cover_path}'")
     logger.debug("album encoded without any specific encoding")
     response = FileResponse(album_cover_path)
     _inject_cache_headers_for_images(response.headers)
