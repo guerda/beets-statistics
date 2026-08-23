@@ -51,7 +51,9 @@ services:
         ports:
             - 8000:8000
         environment:
-            - MUSICLIBRARY_DB=/app/musiclibrary.db
+            - MUSICLIBRARY_DB=/root/.beets/musiclibrary.db
+            - MEDIA_PATH=/media/music
+            - LOG_LEVEL=warning
 ```
 
 ## How to develop and/or contribute?
