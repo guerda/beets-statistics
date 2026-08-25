@@ -50,6 +50,7 @@ async def get_beets_statistics():
 
 
 settings = BeetsStatisticsSettings()
+logger.info(settings)
 if settings.log_level == "debug":
     logger.setLevel(logging.DEBUG)
 
