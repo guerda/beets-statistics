@@ -8,20 +8,20 @@
             <div class="album-artist" title="{{album_artist if album_artist else "n/a"}}" translate="no">{{album_artist if album_artist else "n/a"}}</div>
             <div class="album-genre" translate="no">{{genre if genre else "n/a"}}</div>
             <div class="album-barcode">{% if barcode %}{{barcode}}{% endif %}&nbsp;</div>
-            {% if complete_percentage %}
+            
             <div class="completeness">
-            {% if complete_percentage > 100 %}
-            <div class="progress-bar invalid">
+            {% if complete_percentage %}
+                {% if complete_percentage > 100 %}
+                    <div class="progress-bar invalid">
+                {% else %}
+                    <div style="width: {{complete_percentage|round}}%;" class="progress-bar">
+                {% endif %}
+                {{complete_percentage|round}}%
+                </div>
             {% else %}
-            <div
-                style="width: {{complete_percentage|round}}%;"
-                class="progress-bar"
-            >
+            <div class="progress-bar" style="width: 0%;">0%</div>
             {% endif %}
-            {{complete_percentage|round}}%
             </div>
-                    </div>
-            {% endif %}
         </div>
     </div>
 {%- endmacro %}
