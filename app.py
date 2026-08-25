@@ -1,6 +1,7 @@
 import logging
 import time
 from contextlib import asynccontextmanager
+from os import PathLike
 from pathlib import Path
 from typing import Annotated
 from urllib.parse import quote_plus
@@ -276,13 +277,22 @@ async def get_album_cover(
     album_id: int,
     beets_statistics: Annotated[BeetsStatistics, Depends(get_beets_statistics)],
 ):
-    album_cover_path = beets_statistics.get_album_cover_path(album_id)
-    if album_cover_path is None:
-        logger.debug("No album cover found in DB or file system")
+    relative_album_cover_path = beets_statistics.get_album_cover_path(album_id)
+    album_cover_path: str | PathLike
+    if relative_album_cover_path is None:
+        logger.debug(f"{album_id}: No album cover found in DB")
         album_cover_path = "static/blank.png"
+    else:
+        base_path: Path = Path(settings.media_path)
+        album_cover_path = base_path / relative_album_cover_path
+        if album_cover_path.is_file():
+            logger.debug(f"{album_id}: Album cover found at {album_cover_path}")
+        else:
+            logger.debug(
+                f"{album_id}: Album cover not found in file system {album_cover_path}"
+            )
+            album_cover_path = "static/blank.png"
 
-    logger.debug(f"Album found at '{album_cover_path}'")
-    logger.debug("album encoded without any specific encoding")
     response = FileResponse(album_cover_path)
     _inject_cache_headers_for_images(response.headers)
     return response

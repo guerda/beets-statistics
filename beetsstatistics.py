@@ -352,7 +352,7 @@ class BeetsStatistics:
         query: str = "select artpath from albums where id = ?"
         path: str | None = self._query_one_string(query, (album_id,))
         logger.debug(f"{album_id}: {path}")
-        if path and os.path.isfile(path):
+        if path:
             return path
         else:
             return None
