@@ -2,7 +2,7 @@
 name = "beets-statistics"
 description = "Generate insights into your music collection with beets"
 readme = "README.md"
-version = "0.0.1"
+version = "1.1.0"
 requires-python = ">=3.13,<4"
 license = "GPL v3"
 license-files = ["LICENSE.md"]

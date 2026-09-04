@@ -1,1 +1,2 @@
-docker build -t "guerda/beets-statistics:1.0.3" . 
+IMAGE_VERSION=`uv version --short`
+docker build -t "guerda/beets-statistics:${IMAGE_VERSION}" . 
