@@ -1,4 +1,17 @@
-## [unreleased]
+## [1.1.2] - 2026-11-02
+
+### 🐛 Bug Fixes
+
+- *(deps)* Update dependency fastapi to v0.162.0
+- *(deps)* Update dependency pydantic to v2.14.2
+- *(deps)* Update dependency pydantic-settings to v2.16.2
+
+### 💼 Other
+
+- *(deps)* Bump filelock from 3.30.2 to 4.2.1
+- *(deps)* Bump msgpack from 1.2.1 to 1.2.3
+- *(deps)* Bump dnspython from 2.8.0 to 2.9.0
+## [1.1.1] - 2026-10-22
 
 ### 🚀 Features
 
@@ -10,6 +23,9 @@
 - Reduce plotly size by using plotly partial cartesian 3.6.0
 - Allow sorting albums by completeness
 - Add a player for duplicates
+- Print out settings at startup
+- Add no-translate to album titles
+- Display empty completeness  bar
 
 ### 🐛 Bug Fixes
 
@@ -45,6 +61,21 @@
 - *(deps)* Update dependency fastapi to v0.138.1
 - *(deps)* Update dependency plotly.js to v3.6.0
 - *(deps)* Update plotly for real
+- *(deps)* Update dependency fastapi to v0.139.0
+- *(deps)* Update dependency humanize to v4.16.0
+- *(deps)* Update dependency fastapi to v0.139.1
+- *(deps)* Update dependency fastapi to v0.139.2
+- *(deps)* Update dependency fastapi to v0.140.0
+- *(deps)* Update dependency fastapi to v0.141.1
+- *(deps)* Update dependency pydantic-settings to v2.15.0
+- *(deps)* Update pip to 26.2.1
+- Get correct path and fallback
+- *(deps)* Update dependency pydantic to v2.13.5
+- *(deps)* Update dependency plotly.js to v4
+- *(deps)* Update dependency fastapi to v0.142.2
+- *(deps)* Update dependency pydantic to v2.14.1
+- *(deps)* Update dependency pydantic-settings to v2.16.0
+- *(deps)* Update dependency fastapi to v0.149.0
 
 ### 💼 Other
 
@@ -67,6 +98,10 @@
 - Add caddy target for local https
 - *(deps)* Bump msgpack from 1.2.0 to 1.2.1
 - Pin version to Python 3.14.0, no newer version available for Raspberry Pi
+- Update to Python 3.14.6
+- Use uv versioning
+- *(deps)* Bump urllib3 from 2.7.0 to 2.8.0
+- *(deps)* Update certifi v2026.6.17 -> v.2026.10.19
 
 ### 🚜 Refactor
 
@@ -75,12 +110,17 @@
 ### 📚 Documentation
 
 - Create changelog for 1.0.3
+- Update changelog
+- Add docker compose environments
 
 ### 🎨 Styling
 
 - Change return types to satisfy ty
 - Reduce log level, use logger for backend, too
 - Better log message
+- Remove unneeded suppression comment
+- Use f-strings instead of .format()
+- Use .items() in enumeration
 
 ### ⚙️ Miscellaneous Tasks
 
